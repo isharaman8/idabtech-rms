@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
@@ -7,16 +8,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import CustomInput from "./Custom/Input";
 import SocialDetails from "./SocialDetails";
 import CustomSelect from "./Custom/Select";
-import { COUNTRIES } from "@/config/constants";
+import {
+	COUNTRIES,
+	TEAM_SIZES,
+	PLAN_DETAILS,
+	INDUSTRY_TYPES,
+	ORGANIZATION_TYPES,
+} from "@/config/constants";
 import CustomTextarea from "./Custom/CustomTextArea";
-import PlanDetails from "./ExpandedSection/PlanDetails";
 import { CustomRadio } from "./Custom/CustomRadioButton";
 import CustomDatePicker from "./Custom/CustomDatePicker";
-import { ImageUploader } from "./ExpandedSection/ImageUploader";
-import ExpandedBasicDetails from "./ExpandedSection/BasicDetails";
-import ExpandedServiceProvider from "./ExpandedSection/ServiceProvider";
-import ExpandedLocationDetails from "./ExpandedSection/LocationDetails";
-import { useEffect } from "react";
+import { ImageUploader } from "./Custom/ImageUploader";
 
 // Form Validation Schema
 const formSchema = z.object({
@@ -88,67 +90,6 @@ export default function CreateCompanyForm({
 	companyDetails,
 	handleFormSubmit,
 }: CreateCompanyFormProps) {
-	const PLAN_DETAILS = [
-		{
-			uid: "plan-001",
-			name: "Trial",
-			type: "Default",
-			price: 0,
-			description: "First try, then trust!",
-			features: {
-				job_posts: 3,
-				featured_job_posts: 3,
-				highlighted_job_posts: 3,
-				candidate_cv_preview: 50,
-			},
-			show_on_frontend: true,
-		},
-		{
-			uid: "plan-002",
-			name: "Startup & SME",
-			type: "Basic",
-			price: 150,
-			description:
-				"Monthly saver - yearly plan\nBasic recruitment support - Standard HR docs",
-			features: {
-				job_posts: 15,
-				featured_job_posts: 5,
-				highlighted_job_posts: 3,
-				candidate_cv_preview: 600,
-			},
-			show_on_frontend: true,
-		},
-		{
-			uid: "plan-003",
-			name: "MSME",
-			type: "Premium",
-			price: 375,
-			description:
-				"Premium support - Annual price\nExclusive recruitment support - Standard HR docs",
-			features: {
-				job_posts: 25,
-				featured_job_posts: 10,
-				highlighted_job_posts: 10,
-				candidate_cv_preview: 1500,
-			},
-			show_on_frontend: true,
-		},
-		{
-			uid: "plan-004",
-			name: "Large",
-			type: "Customized",
-			price: 1000,
-			description:
-				"Pay as you use.\nIt will be your customized plan only for you.",
-			features: {
-				job_posts: 60,
-				featured_job_posts: 30,
-				highlighted_job_posts: 15,
-				candidate_cv_preview: "∞",
-			},
-			show_on_frontend: true,
-		},
-	];
 	const form = useForm({
 		resolver: zodResolver(formSchema),
 		defaultValues: companyDetails || {
@@ -170,51 +111,20 @@ export default function CreateCompanyForm({
 			companyName: "",
 			industryType: "",
 			secondaryEmail: "",
+			secondaryMobile: "",
 			organizationType: "",
 			serviceProvider: "yes",
 			establishmentDate: undefined,
 		},
 	});
 
-	const ORGANIZATION_TYPES = [
-		{ label: "NGO", value: "ngo" },
-		{ label: "Other", value: "other" },
-		{ label: "Government", value: "government" },
-		{ label: "Partnership", value: "partnership" },
-		{ label: "Public Limited", value: "public_limited" },
-		{ label: "Private Limited", value: "private_limited" },
-		{ label: "Sole Proprietorship", value: "sole_proprietorship" },
-		{ label: "LLP (Limited Liability Partnership)", value: "llp" },
-	];
+	useEffect(() => {
+		const subscription = form.watch((data) =>
+			console.log("Form Updated:", data)
+		);
 
-	const TEAM_SIZES = [
-		{ label: "1-10", value: "1-10" },
-		{ label: "11-50", value: "11-50" },
-		{ label: "51-200", value: "51-200" },
-		{ label: "201-500", value: "201-500" },
-		{ label: "501-1000", value: "501-1000" },
-		{ label: "1001-5000", value: "1001-5000" },
-		{ label: "5001-10000", value: "5001-10000" },
-		{ label: "10001+", value: "10001+" },
-	];
-
-	const INDUSTRY_TYPES = [
-		{ label: "Retail", value: "retail" },
-		{ label: "Energy", value: "energy" },
-		{ label: "Finance", value: "finance" },
-		{ label: "Education", value: "education" },
-		{ label: "Technology", value: "technology" },
-		{ label: "Healthcare", value: "healthcare" },
-		{ label: "Agriculture", value: "agriculture" },
-		{ label: "Real Estate", value: "real_estate" },
-		{ label: "Hospitality", value: "hospitality" },
-		{ label: "Construction", value: "construction" },
-		{ label: "Entertainment", value: "entertainment" },
-		{ label: "Manufacturing", value: "manufacturing" },
-		{ label: "Transportation", value: "transportation" },
-		{ label: "Telecommunications", value: "telecommunications" },
-		{ label: "Other", value: "other" },
-	];
+		return () => subscription.unsubscribe();
+	}, [form.watch]);
 
 	useEffect(() => {
 		console.log(companyDetails);
@@ -361,15 +271,77 @@ export default function CreateCompanyForm({
 						{/* left half */}
 						<div className="w-1/2">
 							<Section title="Account Details">
-								<ExpandedBasicDetails form={form} />
+								<div className="grid grid-cols-2 gap-4">
+									<CustomInput
+										form={form}
+										name="companyName"
+										label="Company Name"
+										placeholder="Enter company name"
+									/>
+
+									<CustomInput
+										form={form}
+										name="username"
+										label="Username"
+										placeholder="Enter username"
+									/>
+
+									<CustomInput
+										form={form}
+										name="email"
+										label="Email"
+										type="email"
+										placeholder="Enter email address"
+									/>
+
+									<CustomInput
+										form={form}
+										name="password"
+										label="Password"
+										type="password"
+										placeholder="Enter password"
+									/>
+								</div>
 							</Section>
 
 							<Section title="Company Location">
-								<ExpandedLocationDetails form={form} />
+								{/* <ExpandedLocationDetails form={form} /> */}
+
+								<div className="grid grid-cols-2 gap-4">
+									<CustomInput
+										form={form}
+										name="city"
+										label="City"
+										placeholder="Enter city"
+									/>
+									<CustomInput
+										form={form}
+										name="state"
+										label="State"
+										placeholder="Enter state"
+									/>
+									<CustomSelect
+										form={form}
+										name="country"
+										label="Country"
+										options={COUNTRIES}
+									/>
+									<CustomInput
+										form={form}
+										name="pinCode"
+										label="Pincode"
+										placeholder="Enter pincode"
+									/>
+								</div>
 							</Section>
 
 							<Section title="Service Provider">
-								<ExpandedServiceProvider form={form} />
+								<CustomRadio
+									name="serviceProvider"
+									label="Service Provider"
+									options={SERVICE_PROVIDERS}
+									form={form}
+								/>
 							</Section>
 						</div>
 
@@ -396,7 +368,15 @@ export default function CreateCompanyForm({
 							</Section>
 
 							<Section title="Plan Details">
-								<PlanDetails form={form} planDetails={PLAN_DETAILS} />
+								<CustomSelect
+									form={form}
+									name="plan"
+									label="Plan"
+									options={PLAN_DETAILS.map((plan) => ({
+										label: plan.name,
+										value: plan.uid,
+									}))}
+								/>
 							</Section>
 						</div>
 					</div>
