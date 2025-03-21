@@ -1,60 +1,70 @@
 import { useState } from "react";
-import { useFormContext } from "react-hook-form";
-import {
-	FormItem,
-	FormLabel,
-	FormControl,
-	FormMessage,
-} from "@/components/ui/form";
-import { Upload } from "lucide-react";
+import { useController } from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import { UploadCloudIcon } from "lucide-react";
 
 export function ImageUploader({
+	control,
 	name,
 	label,
 }: {
+	control: any;
 	name: string;
-	label: string;
+	label?: string;
 }) {
-	const { setValue, watch } = useFormContext();
+	const { field } = useController({ name, control });
 	const [preview, setPreview] = useState<string | null>(null);
-	const file = watch(name);
 
-	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const uploadedFile = e.target.files?.[0];
-		if (uploadedFile) {
-			setValue(name, uploadedFile);
-			setPreview(URL.createObjectURL(uploadedFile));
+	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const file = event.target.files?.[0];
+		if (file) {
+			field.onChange(file);
+			setPreview(URL.createObjectURL(file));
 		}
 	};
 
 	return (
-		<FormItem className="w-full">
-			<FormLabel>{label}</FormLabel>
-			<FormControl>
-				<div className="relative w-full border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center p-6 cursor-pointer">
+		<div className="space-y-2 size-full">
+			{label && <label className="text-md font-semibold">{label}</label>}
+			<div className="border border-gray-300 rounded-lg p-4 flex flex-col items-center justify-center cursor-pointer w-full mt-2">
+				<input
+					type="file"
+					accept="image/*"
+					onChange={handleFileChange}
+					className="hidden"
+					id={name}
+				/>
+				<label
+					htmlFor={name}
+					className="cursor-pointer flex flex-col items-center"
+				>
 					{preview ? (
 						<img
 							src={preview}
 							alt="Preview"
-							className="w-full h-40 object-cover rounded-lg"
+							className="max-w-40 object-cover rounded-md"
 						/>
 					) : (
 						<>
-							<Upload className="w-8 h-8 text-gray-400 mb-2" />
-							<p className="text-gray-500 text-sm">
+							<UploadCloudIcon className="size-32 text-gray-300" />
+							<div className="text-gray-500 text-sm">
 								Drag and drop a file here or click to browse
-							</p>
+							</div>
 						</>
 					)}
-					<input
-						type="file"
-						className="absolute inset-0 opacity-0 cursor-pointer"
-						onChange={handleFileChange}
-						accept="image/*"
-					/>
-				</div>
-			</FormControl>
-			<FormMessage />
-		</FormItem>
+				</label>
+			</div>
+			{preview ? (
+				<Button
+					variant="outline"
+					onClick={() => setPreview(null)}
+					disabled={!preview}
+				>
+					Remove
+				</Button>
+			) : (
+				<></>
+			)}
+		</div>
 	);
 }

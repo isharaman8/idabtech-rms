@@ -9,6 +9,7 @@ import ExpandedBasicDetails from "./ExpandedSection/BasicDetails";
 import ExpandedServiceProvider from "./ExpandedSection/ServiceProvider";
 import ExpandedLocationDetails from "./ExpandedSection/LocationDetails";
 import QuickCreateAccountDetails from "./QuickCreateSection/QuickCreateAccountDetails";
+import { ImageUploader } from "./ExpandedSection/ImageUploader";
 
 // Form Validation Schema
 const formSchema = z.object({
@@ -137,7 +138,22 @@ export default function CreateCompanyForm() {
 						</div>
 
 						{/* right half */}
-						<div className="w-1/2"></div>
+						<div className="w-1/2">
+							<Section title="Images">
+								<div className="flex justify-stretch items-center gap-4">
+									<ImageUploader
+										control={form.control}
+										name="logo"
+										label="Logo"
+									/>
+									<ImageUploader
+										control={form.control}
+										name="banner"
+										label="Banner"
+									/>
+								</div>
+							</Section>
+						</div>
 					</div>
 				</div>
 			</form>
