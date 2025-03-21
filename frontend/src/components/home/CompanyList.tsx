@@ -119,6 +119,7 @@ const CompanyList: React.FC = () => {
 			}
 
 			if (fetchAgain) {
+				console.log("Company saved successfully:", company);
 				await localFetchCompanies();
 			}
 
