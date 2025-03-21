@@ -82,7 +82,7 @@ const Section = ({
 interface CreateCompanyFormProps {
 	cancelForm: () => void;
 	companyDetails?: any;
-	handleFormSubmit: (company: any) => void;
+	handleFormSubmit: (company: any, fetchAgain: boolean) => Promise<void>;
 }
 
 export default function CreateCompanyForm({
@@ -148,10 +148,14 @@ export default function CreateCompanyForm({
 		{ label: "Other", value: "other" },
 	];
 
+	const customFormSubmit = async (company: any) => {
+		await handleFormSubmit(company, true);
+	};
+
 	return (
 		<Form {...form}>
 			<form
-				onSubmit={form.handleSubmit(handleFormSubmit)}
+				onSubmit={form.handleSubmit(customFormSubmit)}
 				className=" space-y-10 w-full mx-auto p-6 border rounded-lg shadow-md bg-white"
 			>
 				{/* quick create section */}

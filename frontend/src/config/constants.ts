@@ -258,4 +258,5 @@ export const COMPANY_LIST = [
 	organizationType:
 		ORGANIZATION_TYPES[Math.floor(Math.random() * ORGANIZATION_TYPES.length)]
 			.value,
+	uid: crypto.randomUUID(),
 }));

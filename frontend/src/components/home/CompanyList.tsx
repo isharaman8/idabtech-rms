@@ -1,5 +1,5 @@
 // Third-party imports
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
 // Inner imports
@@ -13,16 +13,46 @@ import {
 	TableHead,
 	TableHeader,
 } from "../ui/table";
-import { COMPANY_LIST } from "@/config/constants";
+import {
+	createCompany,
+	deleteCompany,
+	fetchCompanies,
+	updateCompany,
+} from "@/services/companyService";
 
-const CompanyList = () => {
-	const [companies, setCompanies] = useState(COMPANY_LIST);
-	const [openCompanyForm, setOpenCompanyForm] = useState(false);
-	const [editingCompany, setEditingCompany] = useState(null);
+interface Company {
+	uid: string;
+	name: string;
+	contact: string;
+	active: boolean;
+	verified: boolean;
+}
 
+const CompanyList: React.FC = () => {
+	// States
+	const [companies, setCompanies] = useState<Company[]>([]);
+	const [openCompanyForm, setOpenCompanyForm] = useState<boolean>(false);
+	const [editingCompany, setEditingCompany] = useState<Company | null>(null);
+
+	// Fetch companies on mount
+	useEffect(() => {
+		localFetchCompanies();
+	}, []);
+
+	// Fetch Companies
+	const localFetchCompanies = async () => {
+		try {
+			const data = await fetchCompanies();
+			setCompanies(data);
+		} catch (error) {
+			console.error("Error fetching companies:", error);
+		}
+	};
+
+	// Toggle boolean values (verified, active)
 	const handleBoolValueChanges = (
 		uid: string,
-		keyChange: string,
+		keyChange: keyof Company,
 		newValue: boolean
 	) => {
 		setCompanies((prevCompanies) =>
@@ -32,11 +62,14 @@ const CompanyList = () => {
 		);
 	};
 
-	const handleCompanyDetailsChange = (
+	const handleCompanyDetailsChange = async (
 		uid: string,
-		keyChange: string,
+		keyChange: keyof Company,
 		newValue: any
 	) => {
+		const updatedCompany = companies.find((company) => company.uid === uid);
+		if (!updatedCompany) return;
+
 		switch (keyChange) {
 			case "verified":
 			case "active":
@@ -44,41 +77,54 @@ const CompanyList = () => {
 				break;
 			default:
 				console.log("No handler created for:", keyChange);
+				return;
+		}
+
+		try {
+			await handleFormSubmit(
+				{ ...updatedCompany, [keyChange]: newValue },
+				false
+			);
+		} catch (error) {
+			console.error(`Error updating ${keyChange}:`, error);
 		}
 	};
 
-	const handleCompanyFormOpen = (bool: boolean) => {
-		setOpenCompanyForm(bool);
-	};
-
-	const handleCompanyDelete = (companyId: any) => {
-		setCompanies((prevCompanies) =>
-			prevCompanies.filter((company) => company.uid !== companyId)
-		);
+	const handleCompanyDelete = async (companyId: string) => {
+		try {
+			await deleteCompany(companyId);
+			setCompanies((prevCompanies) =>
+				prevCompanies.filter((company) => company.uid !== companyId)
+			);
+		} catch (error) {
+			console.error("Error deleting company:", error);
+		}
 	};
 
 	const handleCancelForm = () => {
 		setEditingCompany(null);
-
-		handleCompanyFormOpen(false);
+		setOpenCompanyForm(false);
 	};
 
-	const handleCloseForm = () => {
-		setEditingCompany(null);
-
-		handleCompanyFormOpen(false);
-	};
-
-	const handleEditCompany = (company: any = null) => {
+	const handleEditCompany = (company: Company | null = null) => {
 		setEditingCompany(company);
-
-		handleCompanyFormOpen(true);
+		setOpenCompanyForm(true);
 	};
 
-	const handleFormSubmit = (company: any) => {
-		console.log(company);
+	const handleFormSubmit = async (company: Company, fetchAgain = true) => {
+		try {
+			if (company.uid) {
+				await updateCompany(company.uid, company);
+			} else {
+				await createCompany(company);
+			}
 
-		handleCloseForm();
+			if (fetchAgain) await localFetchCompanies();
+
+			handleCancelForm();
+		} catch (error) {
+			console.error("Error saving company:", error);
+		}
 	};
 
 	return (
@@ -97,7 +143,6 @@ const CompanyList = () => {
 
 					<FilterSection />
 
-					{/* Company List */}
 					<Table>
 						<TableHeader>
 							<TableRow>
