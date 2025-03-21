@@ -59,6 +59,7 @@ export function ImageUploader({
 					variant="outline"
 					onClick={() => setPreview(null)}
 					disabled={!preview}
+					className="w-full"
 				>
 					Remove
 				</Button>

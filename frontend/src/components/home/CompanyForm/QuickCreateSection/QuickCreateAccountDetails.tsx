@@ -192,7 +192,9 @@ const AccountDetails = ({ form }: { form: any }) => {
 							</FormControl>
 							<SelectContent className="w-full">
 								{COUNTRIES.map((country) => (
-									<SelectItem value={country.value}>{country.label}</SelectItem>
+									<SelectItem key={country.value} value={country.value}>
+										{country.label}
+									</SelectItem>
 								))}
 							</SelectContent>
 						</Select>
