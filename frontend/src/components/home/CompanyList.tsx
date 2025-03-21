@@ -19,14 +19,7 @@ import {
 	fetchCompanies,
 	updateCompany,
 } from "@/services/companyService";
-
-interface Company {
-	uid: string;
-	name: string;
-	contact: string;
-	active: boolean;
-	verified: boolean;
-}
+import { Company } from "@/types";
 
 const CompanyList: React.FC = () => {
 	// States

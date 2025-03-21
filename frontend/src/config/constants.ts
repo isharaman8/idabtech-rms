@@ -260,3 +260,17 @@ export const COMPANY_LIST = [
 			.value,
 	uid: crypto.randomUUID(),
 }));
+
+export const RECOMMENDED_PACKAGES = PLAN_DETAILS.filter(
+	(plan) => plan.show_on_frontend
+).map((plan) => ({
+	value: plan.uid,
+	label: plan.name,
+}));
+
+export const DEFAULT_PACKAGES = PLAN_DETAILS.filter(
+	(plan) => plan.show_on_frontend
+).map((plan) => ({
+	value: plan.uid,
+	label: plan.name,
+}));

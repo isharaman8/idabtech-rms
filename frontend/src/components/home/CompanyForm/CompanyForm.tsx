@@ -5,9 +5,9 @@ import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import CustomInput from "./Custom/Input";
+import CustomInput from "../../shared/Input";
 import SocialDetails from "./SocialDetails";
-import CustomSelect from "./Custom/Select";
+import CustomSelect from "../../shared/Select";
 import {
 	COUNTRIES,
 	TEAM_SIZES,
@@ -15,13 +15,15 @@ import {
 	INDUSTRY_TYPES,
 	ORGANIZATION_TYPES,
 } from "@/config/constants";
-import CustomTextarea from "./Custom/CustomTextArea";
-import { CustomRadio } from "./Custom/CustomRadioButton";
-import CustomDatePicker from "./Custom/CustomDatePicker";
-import { ImageUploader } from "./Custom/ImageUploader";
+import CustomTextarea from "../../shared/CustomTextArea";
+import { CustomRadio } from "../../shared/CustomRadioButton";
+import CustomDatePicker from "../../shared/CustomDatePicker";
+import { ImageUploader } from "../../shared/ImageUploader";
 
 // Form Validation Schema
 const formSchema = z.object({
+	uid: z.string().optional().nullable().or(z.literal("")),
+	id: z.string().optional().nullable().or(z.literal("")),
 	bio: z.string().optional().nullable().or(z.literal("")),
 	vision: z.string().optional().nullable().or(z.literal("")),
 	mobile: z.string().optional().nullable().or(z.literal("")),
@@ -93,6 +95,8 @@ export default function CreateCompanyForm({
 	const form = useForm({
 		resolver: zodResolver(formSchema),
 		defaultValues: companyDetails || {
+			uid: "",
+			id: "",
 			bio: "",
 			logo: "",
 			city: "",

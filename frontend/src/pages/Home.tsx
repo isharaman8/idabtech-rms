@@ -1,15 +1,17 @@
 import { useState } from "react";
+
 import Sidebar from "../components/home/Sidebar";
 import CompanyList from "../components/home/CompanyList";
+import CompanyPlans from "@/components/home/Plans/CompanyPlans";
 
 export default function Layout() {
-	const [selectedOption, setSelectedOption] = useState("companies");
+	const [selectedOption, setSelectedOption] = useState("Company Plan");
 
 	function handleRightSide(option: string) {
-		console.log("option", option);
+		const validPlans = ["Company", "Company Plan"];
 
-		if (option !== "Companies" && option !== "Student Plan") {
-			option = "companies";
+		if (!validPlans.includes(option)) {
+			option = "Company";
 		}
 
 		setSelectedOption(option);
@@ -22,7 +24,8 @@ export default function Layout() {
 
 			{/* Right Section */}
 			<div className="flex-1 p-6 bg-gray-100">
-				{selectedOption === "companies" && <CompanyList />}
+				{selectedOption === "Company" && <CompanyList />}
+				{selectedOption === "Company Plan" && <CompanyPlans />}
 			</div>
 		</div>
 	);

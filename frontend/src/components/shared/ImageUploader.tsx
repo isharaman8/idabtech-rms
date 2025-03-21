@@ -3,24 +3,40 @@ import { useController } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { UploadCloudIcon } from "lucide-react";
 
-export function ImageUploader({
-	control,
-	name,
-	label,
-}: {
-	control: any;
+interface ImageUploaderProps {
 	name: string;
 	label?: string;
-}) {
-	const { field } = useController({ name, control });
-	const [preview, setPreview] = useState<string | null>(null);
+	control?: any;
+	value?: File | null;
+	onChange?: (file: File | null) => void;
+}
+
+export function ImageUploader({
+	name,
+	label,
+	control,
+	value,
+	onChange,
+}: ImageUploaderProps) {
+	const { field } = control
+		? useController({ name, control })
+		: { field: { value, onChange } };
+
+	const [preview, setPreview] = useState<string | null>(
+		field.value ? URL.createObjectURL(field.value) : null
+	);
 
 	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const file = event.target.files?.[0];
 		if (file) {
-			field.onChange(file);
+			field.onChange?.(file);
 			setPreview(URL.createObjectURL(file));
 		}
+	};
+
+	const handleRemove = () => {
+		setPreview(null);
+		field.onChange?.(null);
 	};
 
 	return (
@@ -54,17 +70,10 @@ export function ImageUploader({
 					)}
 				</label>
 			</div>
-			{preview ? (
-				<Button
-					variant="outline"
-					onClick={() => setPreview(null)}
-					disabled={!preview}
-					className="w-full"
-				>
+			{preview && (
+				<Button variant="outline" onClick={handleRemove} className="w-full">
 					Remove
 				</Button>
-			) : (
-				<></>
 			)}
 		</div>
 	);
