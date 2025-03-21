@@ -5,10 +5,14 @@ import { TableRow, TableCell } from "@/components/ui/table";
 
 const CompanyRow = ({
 	company,
+	handleOpenForm,
+	handleCompanyDelete,
 	handleCompanyDetailsChange,
 }: {
 	company: any;
 	handleCompanyDetailsChange: any;
+	handleCompanyDelete: any;
+	handleOpenForm: any;
 }) => {
 	return (
 		<TableRow>
@@ -43,7 +47,7 @@ const CompanyRow = ({
 					<Switch
 						checked={company.active}
 						onCheckedChange={(checked) =>
-							handleCompanyDetailsChange(company.id, "active", checked)
+							handleCompanyDetailsChange(company.uid, "active", checked)
 						}
 					/>
 					<span
@@ -62,7 +66,7 @@ const CompanyRow = ({
 					<Switch
 						checked={company.verified}
 						onCheckedChange={(checked) =>
-							handleCompanyDetailsChange(company.id, "verified", checked)
+							handleCompanyDetailsChange(company.uid, "verified", checked)
 						}
 					/>
 					<span
@@ -78,11 +82,27 @@ const CompanyRow = ({
 			{/* Action Buttons Column */}
 			<TableCell>
 				<div className="flex items-center gap-2">
-					<Button variant="outline">View</Button>
-					<Button variant="ghost" size="icon">
+					<Button
+						variant="outline"
+						className="cursor-pointer"
+						onClick={() => handleOpenForm(company)}
+					>
+						View
+					</Button>
+					<Button
+						variant="ghost"
+						size="icon"
+						className="cursor-pointer"
+						onClick={() => handleOpenForm(company)}
+					>
 						<Pencil className="w-5 h-5 text-gray-500" />
 					</Button>
-					<Button variant="ghost" size="icon">
+					<Button
+						variant="ghost"
+						size="icon"
+						className="cursor-pointer"
+						onClick={() => handleCompanyDelete(company.uid)}
+					>
 						<Trash2 className="w-5 h-5 text-gray-500" />
 					</Button>
 				</div>

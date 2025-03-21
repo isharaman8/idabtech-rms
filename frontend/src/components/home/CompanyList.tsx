@@ -5,25 +5,19 @@ import { Button } from "@/components/ui/button";
 // Inner imports
 import CompanyRow from "./CompanyRow";
 import {
-	Select,
-	SelectItem,
-	SelectValue,
-	SelectTrigger,
-	SelectContent,
-} from "../ui/select";
-import { Input } from "../ui/input";
-import {
 	Table,
 	TableRow,
 	TableBody,
 	TableHead,
 	TableHeader,
 } from "../ui/table";
+import FilterSection from "./FilterSection";
+import CompanyForm from "./CompanyForm/CompanyForm";
 
 const CompanyList = () => {
 	const [companies, setCompanies] = useState([
 		{
-			id: 1,
+			uid: 1,
 			name: "Expert Recruitment - UAE",
 			location: "Location, Country",
 			email: "info@expertrecruitment.com",
@@ -32,7 +26,7 @@ const CompanyList = () => {
 			active: true,
 		},
 		{
-			id: 2,
+			uid: 2,
 			name: "Tech Solutions - USA",
 			location: "New York, USA",
 			email: "contact@techsolutions.com",
@@ -41,7 +35,7 @@ const CompanyList = () => {
 			active: false,
 		},
 		{
-			id: 3,
+			uid: 3,
 			name: "Global Enterprises - UK",
 			location: "London, UK",
 			email: "info@globalenterprises.com",
@@ -50,7 +44,7 @@ const CompanyList = () => {
 			active: true,
 		},
 		{
-			id: 4,
+			uid: 4,
 			name: "Innovative Minds - India",
 			location: "Bangalore, India",
 			email: "support@innovativeminds.in",
@@ -59,7 +53,7 @@ const CompanyList = () => {
 			active: false,
 		},
 		{
-			id: 5,
+			uid: 5,
 			name: "Future Vision - Canada",
 			location: "Toronto, Canada",
 			email: "hello@futurevision.ca",
@@ -68,7 +62,7 @@ const CompanyList = () => {
 			active: true,
 		},
 		{
-			id: 6,
+			uid: 6,
 			name: "Bright Horizons - Australia",
 			location: "Sydney, Australia",
 			email: "contact@brighthorizons.au",
@@ -77,121 +71,84 @@ const CompanyList = () => {
 			active: false,
 		},
 	]);
+	const [openCompanyForm, setOpenCompanyForm] = useState(false);
 
 	const handleBoolValueChanges = (
-		id: number,
+		uid: number,
 		keyChange: string,
 		newValue: boolean
 	) => {
 		setCompanies((prevCompanies) =>
 			prevCompanies.map((company) =>
-				company.id === id ? { ...company, [keyChange]: newValue } : company
+				company.uid === uid ? { ...company, [keyChange]: newValue } : company
 			)
 		);
 	};
 
 	const handleCompanyDetailsChange = (
-		id: number,
+		uid: number,
 		keyChange: string,
 		newValue: any
 	) => {
 		switch (keyChange) {
 			case "verified":
 			case "active":
-				handleBoolValueChanges(id, keyChange, newValue);
+				handleBoolValueChanges(uid, keyChange, newValue);
 				break;
 			default:
 				console.log("No handler created for:", keyChange);
 		}
 	};
 
+	const handleCompanyFormOpen = (bool: boolean) => {
+		setOpenCompanyForm(bool);
+	};
+
+	const handleCompanyDelete = (companyId: any) => {
+		setCompanies((prevCompanies) =>
+			prevCompanies.filter((company) => company.uid !== companyId)
+		);
+	};
+
 	return (
-		<div className="bg-white p-6 rounded-xl shadow-md">
-			<div className="flex justify-between items-center mb-4">
-				<h2 className="text-xl font-bold">Company List</h2>
-				<Button className="bg-blue-600 text-white">+ Create Company</Button>
-			</div>
+		<>
+			{!openCompanyForm ? (
+				<div className="bg-white p-6 rounded-xl shadow-md">
+					<div className="flex justify-between items-center mb-4">
+						<h2 className="text-xl font-bold">Company List</h2>
+						<Button className="bg-blue-600 text-white">+ Create Company</Button>
+					</div>
 
-			{/* Filters Section */}
-			<div className="grid grid-cols-5 gap-4 mb-4 bg-gray-200 p-5 rounded-md">
-				<div>
-					<label className="block text-sm font-medium mb-1">Search</label>
-					<Input className="bg-white" placeholder="Search" />
-				</div>
-				<div>
-					<label className="block text-sm font-medium mb-1">
-						Organization Type
-					</label>
-					<Select>
-						<SelectTrigger className="w-full bg-white">
-							<SelectValue placeholder="All" />
-						</SelectTrigger>
-						<SelectContent className="bg-white">
-							<SelectItem value="all">All</SelectItem>
-						</SelectContent>
-					</Select>
-				</div>
-				<div>
-					<label className="block text-sm font-medium mb-1">
-						Industry Type
-					</label>
-					<Select>
-						<SelectTrigger className="w-full bg-white">
-							<SelectValue placeholder="All" />
-						</SelectTrigger>
-						<SelectContent className="bg-white">
-							<SelectItem value="all">All</SelectItem>
-						</SelectContent>
-					</Select>
-				</div>
-				<div>
-					<label className="block text-sm font-medium mb-1">
-						Email Verification
-					</label>
-					<Select>
-						<SelectTrigger className="w-full bg-white">
-							<SelectValue placeholder="All" />
-						</SelectTrigger>
-						<SelectContent className="bg-white">
-							<SelectItem value="all">All</SelectItem>
-						</SelectContent>
-					</Select>
-				</div>
-				<div>
-					<label className="block text-sm font-medium mb-1">Sort By</label>
-					<Select>
-						<SelectTrigger className="w-full bg-white">
-							<SelectValue placeholder="Latest" />
-						</SelectTrigger>
-						<SelectContent className="bg-white">
-							<SelectItem value="latest">Latest</SelectItem>
-						</SelectContent>
-					</Select>
-				</div>
-			</div>
+					<FilterSection />
 
-			{/* Company List */}
-			<Table>
-				<TableHeader>
-					<TableRow>
-						<TableHead>Company</TableHead>
-						<TableHead>Contact</TableHead>
-						<TableHead>Account Status</TableHead>
-						<TableHead>Email Verification</TableHead>
-						<TableHead>Actions</TableHead>
-					</TableRow>
-				</TableHeader>
-				<TableBody>
-					{companies.map((company) => (
-						<CompanyRow
-							key={company.id}
-							company={company}
-							handleCompanyDetailsChange={handleCompanyDetailsChange}
-						/>
-					))}
-				</TableBody>
-			</Table>
-		</div>
+					{/* Company List */}
+					<Table>
+						<TableHeader>
+							<TableRow>
+								<TableHead>Company</TableHead>
+								<TableHead>Contact</TableHead>
+								<TableHead>Account Status</TableHead>
+								<TableHead>Email Verification</TableHead>
+								<TableHead>Actions</TableHead>
+							</TableRow>
+						</TableHeader>
+						<TableBody>
+							{companies.map((company) => (
+								<CompanyRow
+									key={company.uid}
+									company={company}
+									handleCompanyDelete={handleCompanyDelete}
+									handleCompanyDetailsChange={handleCompanyDetailsChange}
+									handleOpenForm={handleCompanyFormOpen}
+								/>
+							))}
+						</TableBody>
+					</Table>
+				</div>
+			) : (
+				<CompanyForm />
+			)}
+		</>
 	);
 };
 

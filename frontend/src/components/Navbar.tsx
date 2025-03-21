@@ -54,8 +54,8 @@ export default function Navbar() {
 				</Button>
 
 				{/* User Avatar */}
-				<Avatar>
-					<AvatarFallback>id</AvatarFallback>
+				<Avatar className="shadow-md cursor-pointer size-10">
+					<AvatarFallback className="bg-gray-200">ID</AvatarFallback>
 				</Avatar>
 			</div>
 		</nav>
