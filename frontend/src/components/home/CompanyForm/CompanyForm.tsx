@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
@@ -22,6 +21,8 @@ import { ImageUploader } from "../../shared/ImageUploader";
 
 // Form Validation Schema
 const formSchema = z.object({
+	active: z.boolean().optional().nullable(),
+	verified: z.boolean().optional().nullable(),
 	uid: z.string().optional().nullable().or(z.literal("")),
 	id: z.string().optional().nullable().or(z.literal("")),
 	bio: z.string().optional().nullable().or(z.literal("")),
@@ -111,6 +112,8 @@ export default function CreateCompanyForm({
 			teamSize: "",
 			password: "",
 			username: "",
+			active: false,
+			verified: false,
 			socialLinks: [],
 			companyName: "",
 			industryType: "",
@@ -121,18 +124,6 @@ export default function CreateCompanyForm({
 			establishmentDate: undefined,
 		},
 	});
-
-	useEffect(() => {
-		const subscription = form.watch((data) =>
-			console.log("Form Updated:", data)
-		);
-
-		return () => subscription.unsubscribe();
-	}, [form.watch]);
-
-	useEffect(() => {
-		console.log(companyDetails);
-	}, []);
 
 	const SERVICE_PROVIDERS = [
 		{ label: "Yes", value: "yes" },

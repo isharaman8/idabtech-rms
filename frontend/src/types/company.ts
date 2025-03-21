@@ -4,6 +4,7 @@ export interface SocialLink {
 }
 
 export interface Company {
+	id?: string;
 	uid: string;
 	name: string;
 	email: string;
