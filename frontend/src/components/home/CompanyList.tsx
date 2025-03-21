@@ -33,22 +33,30 @@ const CompanyList: React.FC = () => {
 		organizationType: "",
 		emailVerification: "",
 	});
+	const [debouncedFilters, setDebouncedFilters] = useState(filters);
 
-	// Fetch companies on mount
 	useEffect(() => {
-		localFetchCompanies();
-	}, []);
+		localFetchCompanies(debouncedFilters);
+	}, [debouncedFilters]);
 
-	// Fetch Companies
+	useEffect(() => {
+		const handler = setTimeout(() => {
+			setDebouncedFilters(filters);
+		}, 200);
+
+		return () => clearTimeout(handler);
+	}, [filters]);
+
 	const handleFilterChange = (key: string, value: any) => {
 		setFilters((prev) => ({
 			...prev,
 			[key]: value,
 		}));
 	};
-	const localFetchCompanies = async () => {
+
+	const localFetchCompanies = async (dFilters: any = {}) => {
 		try {
-			const data = await fetchCompanies();
+			const data = await fetchCompanies(dFilters);
 			setCompanies(data);
 		} catch (error) {
 			console.error("Error fetching companies:", error);
