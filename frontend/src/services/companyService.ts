@@ -30,10 +30,9 @@ export const createCompany = async (company: any) => {
 
 export const updateCompany = async (uid: string, updatedCompany: any) => {
 	try {
-		const response = await axiosInstance.put(
-			`${API_URL}/${uid}`,
-			updatedCompany
-		);
+		const url = `${API_URL}/${uid}`;
+		const response = await axiosInstance.put(url, updatedCompany);
+
 		return response.data;
 	} catch (error) {
 		console.error("Error updating company:", error);

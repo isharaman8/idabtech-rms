@@ -49,7 +49,6 @@ const CompanyList: React.FC = () => {
 		}
 	};
 
-	// Toggle boolean values (verified, active)
 	const handleBoolValueChanges = (
 		uid: string,
 		keyChange: keyof Company,
@@ -111,7 +110,7 @@ const CompanyList: React.FC = () => {
 		setOpenCompanyForm(true);
 	};
 
-	const handleFormSubmit = async (company: Company, fetchAgain = true) => {
+	const handleFormSubmit = async (company: Company, fetchAgain = false) => {
 		try {
 			if (company.uid) {
 				await updateCompany(company.uid, company);
@@ -119,7 +118,9 @@ const CompanyList: React.FC = () => {
 				await createCompany(company);
 			}
 
-			if (fetchAgain) await localFetchCompanies();
+			if (fetchAgain) {
+				await localFetchCompanies();
+			}
 
 			handleCancelForm();
 		} catch (error) {
