@@ -34,6 +34,10 @@ const formSchema = z.object({
 	socialLinks: z
 		.array(z.object({ platform: z.string(), link: z.string() }))
 		.optional(),
+	logo: z
+		.instanceof(File, { message: "Logo is required" })
+		.or(z.string())
+		.optional(),
 });
 
 const Section = ({
@@ -56,6 +60,7 @@ export default function CreateCompanyForm() {
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			bio: "",
+			logo: "",
 			city: "",
 			email: "",
 			state: "",
