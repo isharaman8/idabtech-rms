@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
@@ -8,49 +7,59 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import CustomInput from "./Custom/Input";
 import SocialDetails from "./SocialDetails";
 import CustomSelect from "./Custom/Select";
+import { COUNTRIES } from "@/config/constants";
 import CustomTextarea from "./Custom/CustomTextArea";
 import PlanDetails from "./ExpandedSection/PlanDetails";
+import { CustomRadio } from "./Custom/CustomRadioButton";
 import CustomDatePicker from "./Custom/CustomDatePicker";
 import { ImageUploader } from "./ExpandedSection/ImageUploader";
 import ExpandedBasicDetails from "./ExpandedSection/BasicDetails";
 import ExpandedServiceProvider from "./ExpandedSection/ServiceProvider";
 import ExpandedLocationDetails from "./ExpandedSection/LocationDetails";
-import QuickCreateAccountDetails from "./QuickCreateSection/QuickCreateAccountDetails";
-import { CustomRadio } from "./Custom/CustomRadioButton";
-import { COUNTRIES } from "@/config/constants";
+import { useEffect } from "react";
 
 // Form Validation Schema
 const formSchema = z.object({
-	bio: z.string().optional(),
-	vision: z.string().optional(),
-	mobile: z.string().optional(),
-	website: z.string().optional(),
-	teamSize: z.string().optional(),
-	establishmentDate: z.date().optional(),
+	bio: z.string().optional().nullable().or(z.literal("")),
+	vision: z.string().optional().nullable().or(z.literal("")),
+	mobile: z.string().optional().nullable().or(z.literal("")),
+	website: z.string().optional().nullable().or(z.literal("")),
+	teamSize: z.string().optional().nullable().or(z.literal("")),
+	establishmentDate: z.date().optional().nullable(),
 	serviceProvider: z.enum(["yes", "no"]),
-	secondaryMobile: z.string().optional(),
+	secondaryMobile: z.string().optional().nullable().or(z.literal("")),
 	email: z.string().email("Invalid email"),
-	city: z.string().min(1, "City is required"),
-	state: z.string().min(1, "State is required"),
-	country: z.string().min(1, "Country is required"),
-	pinCode: z.string().min(1, "Pin code is required"),
-	username: z.string().min(1, "Username is required"),
+	city: z.string().optional().nullable().or(z.literal("")),
+	state: z.string().optional().nullable().or(z.literal("")),
+	country: z.string().optional().nullable().or(z.literal("")),
+	pinCode: z.string().optional().nullable().or(z.literal("")),
+	username: z.string().optional().nullable().or(z.literal("")),
 	industryType: z.string().min(1, "Select industry type"),
 	companyName: z.string().min(1, "Company Name is required"),
-	secondaryEmail: z.string().email("Invalid email").optional(),
+	secondaryEmail: z
+		.string()
+		.email("Invalid email")
+		.optional()
+		.nullable()
+		.or(z.literal("")),
 	organizationType: z.string().min(1, "Select organization type"),
-	password: z.string().min(8, "Password must be at least 8 characters"),
+	password: z.string().optional().nullable().or(z.literal("")),
 	socialLinks: z
 		.array(z.object({ platform: z.string(), link: z.string() }))
-		.optional(),
+		.optional()
+		.nullable(),
 	logo: z
 		.instanceof(File, { message: "Logo is required" })
 		.or(z.string())
-		.optional(),
+		.optional()
+		.nullable()
+		.or(z.literal("")),
 	banner: z
 		.instanceof(File, { message: "Banner is required" })
 		.or(z.string())
-		.optional(),
+		.optional()
+		.nullable()
+		.or(z.literal("")),
 });
 
 const Section = ({
@@ -68,7 +77,17 @@ const Section = ({
 	</div>
 );
 
-export default function CreateCompanyForm() {
+interface CreateCompanyFormProps {
+	cancelForm: () => void;
+	companyDetails?: any;
+	handleFormSubmit: (company: any) => void;
+}
+
+export default function CreateCompanyForm({
+	cancelForm,
+	companyDetails,
+	handleFormSubmit,
+}: CreateCompanyFormProps) {
 	const PLAN_DETAILS = [
 		{
 			uid: "plan-001",
@@ -132,7 +151,7 @@ export default function CreateCompanyForm() {
 	];
 	const form = useForm({
 		resolver: zodResolver(formSchema),
-		defaultValues: {
+		defaultValues: companyDetails || {
 			bio: "",
 			logo: "",
 			city: "",
@@ -147,13 +166,13 @@ export default function CreateCompanyForm() {
 			teamSize: "",
 			password: "",
 			username: "",
+			socialLinks: [],
 			companyName: "",
 			industryType: "",
 			secondaryEmail: "",
 			organizationType: "",
 			serviceProvider: "yes",
 			establishmentDate: undefined,
-			socialLinks: [{ platform: "Instagram", link: "" }],
 		},
 	});
 
@@ -197,6 +216,10 @@ export default function CreateCompanyForm() {
 		{ label: "Other", value: "other" },
 	];
 
+	useEffect(() => {
+		console.log(companyDetails);
+	}, []);
+
 	const SERVICE_PROVIDERS = [
 		{ label: "Yes", value: "yes" },
 		{ label: "No", value: "no" },
@@ -215,29 +238,26 @@ export default function CreateCompanyForm() {
 		{ label: "Other", value: "other" },
 	];
 
-	const { watch } = form;
-
-	// Log form changes
-	useEffect(() => {
-		const subscription = watch((data) => console.log("Form Updated:", data));
-		return () => subscription.unsubscribe(); // Cleanup on unmount
-	}, [watch]);
-
-	const onSubmit = (data: any) => {
-		console.log("Form Submitted:", data);
-	};
-
 	return (
 		<Form {...form}>
 			<form
-				onSubmit={form.handleSubmit(onSubmit)}
+				onSubmit={form.handleSubmit(handleFormSubmit)}
 				className=" space-y-10 w-full mx-auto p-6 border rounded-lg shadow-md bg-white"
 			>
 				{/* quick create section */}
 				<div className="space-y-6">
-					<h2 className="text-xl font-semibold border-b-2 pb-2 border-red-300">
-						Quick Create Company
-					</h2>
+					<div className="flex items-center gap-4">
+						<Button
+							type="button"
+							onClick={cancelForm}
+							className="flex items-center gap-2 cursor-pointer"
+						>
+							<span>&larr;</span> Back
+						</Button>
+						<h2 className="text-xl font-semibold border-b-2 pb-2 border-red-300 w-full">
+							Quick Create Company
+						</h2>
+					</div>
 
 					<Section title="Account Details">
 						<div className="grid grid-cols-2 gap-4">

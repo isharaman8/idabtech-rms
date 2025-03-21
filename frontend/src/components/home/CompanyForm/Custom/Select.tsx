@@ -34,10 +34,15 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
 			render={({ field }) => (
 				<FormItem className="w-full">
 					<FormLabel>{label}</FormLabel>
-					<Select onValueChange={field.onChange}>
+					<Select onValueChange={field.onChange} value={field.value || ""}>
 						<FormControl>
 							<SelectTrigger className="w-full">
-								<SelectValue placeholder="Select one" />
+								<SelectValue placeholder="Select one">
+									{field.value
+										? options.find((option) => option.value === field.value)
+												?.label
+										: "Select one"}
+								</SelectValue>
 							</SelectTrigger>
 						</FormControl>
 						<SelectContent className="w-full">
