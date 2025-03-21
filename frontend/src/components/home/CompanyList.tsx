@@ -26,6 +26,13 @@ const CompanyList: React.FC = () => {
 	const [companies, setCompanies] = useState<Company[]>([]);
 	const [openCompanyForm, setOpenCompanyForm] = useState<boolean>(false);
 	const [editingCompany, setEditingCompany] = useState<Company | null>(null);
+	const [filters, setFilters] = useState({
+		search: "",
+		sortBy: "",
+		industryType: "",
+		organizationType: "",
+		emailVerification: "",
+	});
 
 	// Fetch companies on mount
 	useEffect(() => {
@@ -33,6 +40,12 @@ const CompanyList: React.FC = () => {
 	}, []);
 
 	// Fetch Companies
+	const handleFilterChange = (key: string, value: any) => {
+		setFilters((prev) => ({
+			...prev,
+			[key]: value,
+		}));
+	};
 	const localFetchCompanies = async () => {
 		try {
 			const data = await fetchCompanies();
@@ -135,7 +148,10 @@ const CompanyList: React.FC = () => {
 						</Button>
 					</div>
 
-					<FilterSection />
+					<FilterSection
+						handleFilterChange={handleFilterChange}
+						filters={filters}
+					/>
 
 					<Table>
 						<TableHeader>

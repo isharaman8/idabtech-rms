@@ -8,7 +8,18 @@ const SORT_BY_ARRAY = [
 	{ label: "Oldest First", value: "oldest" },
 ];
 
-const FilterSection = () => {
+interface FilterSectionProps {
+	filters: {
+		sortBy: string;
+		search: string;
+		industryType: string;
+		organizationType: string;
+		emailVerification: string;
+	};
+	handleFilterChange: (key: string, name: string) => void;
+}
+
+const FilterSection = ({ handleFilterChange }: FilterSectionProps) => {
 	return (
 		<div className="grid grid-cols-5 gap-4 mb-4 bg-gray-200 p-5 rounded-md">
 			<CustomInput
@@ -16,13 +27,15 @@ const FilterSection = () => {
 				name="search"
 				className="bg-white"
 				placeholder="Search"
+				onChange={(value) => handleFilterChange("search", value)}
 			/>
 
 			<CustomSelect
-				label="All"
+				label="Organization Type"
 				name="organizationType"
 				options={ORGANIZATION_TYPES}
 				className="bg-white"
+				onChange={(value) => handleFilterChange("organizationType", value)}
 			/>
 
 			<CustomSelect
@@ -30,12 +43,14 @@ const FilterSection = () => {
 				label="Industry Type"
 				className="bg-white"
 				options={INDUSTRY_TYPES}
+				onChange={(value) => handleFilterChange("industryType", value)}
 			/>
 			<CustomSelect
 				label="Email Verification"
 				name="emailVerification"
 				options={EMAIL_VERIFICATION_ARRAY}
 				className="bg-white"
+				onChange={(value) => handleFilterChange("emailVerification", value)}
 			/>
 
 			<CustomSelect
@@ -43,6 +58,7 @@ const FilterSection = () => {
 				name="sortBy"
 				options={SORT_BY_ARRAY}
 				className="bg-white"
+				onChange={(value) => handleFilterChange("sortBy", value)}
 			/>
 		</div>
 	);

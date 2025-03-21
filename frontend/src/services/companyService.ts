@@ -2,7 +2,7 @@ import axiosInstance from "@/config/api";
 
 const API_ENDPOINT = `/companies`;
 
-export const fetchCompanies = async () => {
+export const fetchCompanies = async (filters: any = {}) => {
 	try {
 		const response = await axiosInstance.get(API_ENDPOINT);
 		return response.data;
