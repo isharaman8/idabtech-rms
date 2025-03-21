@@ -5,7 +5,7 @@ import CompanyList from "../components/home/CompanyList";
 import CompanyPlans from "@/components/home/Plans/CompanyPlans";
 
 export default function Layout() {
-	const [selectedOption, setSelectedOption] = useState("Company Plan");
+	const [selectedOption, setSelectedOption] = useState("Company");
 
 	function handleRightSide(option: string) {
 		const validPlans = ["Company", "Company Plan"];

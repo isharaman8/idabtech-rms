@@ -26,11 +26,13 @@ const CompanyRow = ({
 
 					{/* Company Details */}
 					<div>
-						<h3 className="font-semibold">{company.name}</h3>
-						<div className="flex items-center text-sm text-gray-500">
-							<MapPin className="w-4 h-4 mr-1" />
-							{company.location}
-						</div>
+						<h3 className="font-semibold">{company.companyName}</h3>
+						{company.city && (
+							<div className="flex items-center text-sm text-gray-500">
+								<MapPin className="w-4 h-4 mr-1" />
+								{company.city}
+							</div>
+						)}
 					</div>
 				</div>
 			</TableCell>

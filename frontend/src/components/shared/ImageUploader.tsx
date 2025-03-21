@@ -49,6 +49,8 @@ export function ImageUploader({
 					onChange={handleFileChange}
 					className="hidden"
 					id={name}
+					// disabled for now
+					disabled
 				/>
 				<label
 					htmlFor={name}
@@ -63,8 +65,8 @@ export function ImageUploader({
 					) : (
 						<>
 							<UploadCloudIcon className="size-32 text-gray-300" />
-							<div className="text-gray-500 text-sm">
-								Drag and drop a file here or click to browse
+							<div className="text-gray-500 text-sm text-center">
+								Drag and drop a file here or click to browse (DISABLED)
 							</div>
 						</>
 					)}
