@@ -122,15 +122,15 @@ const AccountDetails = ({ form }: { form: any }) => {
 				control={form.control}
 				name="organizationType"
 				render={({ field }) => (
-					<FormItem>
+					<FormItem className="w-full">
 						<FormLabel>Organization Type</FormLabel>
 						<Select onValueChange={field.onChange}>
 							<FormControl>
-								<SelectTrigger>
+								<SelectTrigger className="w-full">
 									<SelectValue placeholder="Select one" />
 								</SelectTrigger>
 							</FormControl>
-							<SelectContent>
+							<SelectContent className="w-full">
 								<SelectItem value="corporation">Corporation</SelectItem>
 								<SelectItem value="startup">Startup</SelectItem>
 							</SelectContent>
@@ -145,15 +145,15 @@ const AccountDetails = ({ form }: { form: any }) => {
 				control={form.control}
 				name="industryType"
 				render={({ field }) => (
-					<FormItem>
+					<FormItem className="w-full">
 						<FormLabel>Industry Type</FormLabel>
 						<Select onValueChange={field.onChange}>
 							<FormControl>
-								<SelectTrigger>
+								<SelectTrigger className="w-full">
 									<SelectValue placeholder="Select one" />
 								</SelectTrigger>
 							</FormControl>
-							<SelectContent>
+							<SelectContent className="w-full">
 								<SelectItem value="tech">Technology</SelectItem>
 								<SelectItem value="finance">Finance</SelectItem>
 							</SelectContent>
@@ -182,15 +182,15 @@ const AccountDetails = ({ form }: { form: any }) => {
 				control={form.control}
 				name="country"
 				render={({ field }) => (
-					<FormItem>
+					<FormItem className="w-full">
 						<FormLabel>Country</FormLabel>
 						<Select onValueChange={field.onChange}>
 							<FormControl>
-								<SelectTrigger>
+								<SelectTrigger className="w-full">
 									<SelectValue placeholder="Select one" />
 								</SelectTrigger>
 							</FormControl>
-							<SelectContent>
+							<SelectContent className="w-full">
 								{COUNTRIES.map((country) => (
 									<SelectItem value={country.value}>{country.label}</SelectItem>
 								))}

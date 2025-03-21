@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import SocialDetails from "./SocialDetails";
 import ExpandedBasicDetails from "./ExpandedSection/BasicDetails";
+import ExpandedServiceProvider from "./ExpandedSection/ServiceProvider";
 import ExpandedLocationDetails from "./ExpandedSection/LocationDetails";
 import QuickCreateAccountDetails from "./QuickCreateSection/QuickCreateAccountDetails";
 
@@ -109,7 +110,6 @@ export default function CreateCompanyForm() {
 				</div>
 
 				{/* detailed create section */}
-
 				<div className="space-y-5">
 					<h2 className="text-xl font-semibold border-b-2 pb-2 border-red-300">
 						Create Company
@@ -125,9 +125,14 @@ export default function CreateCompanyForm() {
 							<Section title="Company Location">
 								<ExpandedLocationDetails form={form} />
 							</Section>
+
+							<Section title="Service Provider">
+								<ExpandedServiceProvider form={form} />
+							</Section>
 						</div>
 
 						{/* right half */}
+						<div className="w-1/2"></div>
 					</div>
 				</div>
 			</form>

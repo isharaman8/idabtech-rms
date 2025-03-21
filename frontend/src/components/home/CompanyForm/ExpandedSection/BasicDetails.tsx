@@ -17,7 +17,7 @@ const AccountDetails = ({ form }: { form: any }) => {
 					<FormItem>
 						<FormLabel>Company Name</FormLabel>
 						<FormControl>
-							<Input {...field} />
+							<Input {...field} placeholder="Company Name" />
 						</FormControl>
 						<FormMessage />
 					</FormItem>
@@ -31,7 +31,7 @@ const AccountDetails = ({ form }: { form: any }) => {
 					<FormItem>
 						<FormLabel>Username</FormLabel>
 						<FormControl>
-							<Input {...field} />
+							<Input {...field} placeholder="Username" />
 						</FormControl>
 						<FormMessage />
 					</FormItem>
@@ -45,7 +45,7 @@ const AccountDetails = ({ form }: { form: any }) => {
 					<FormItem>
 						<FormLabel>Email</FormLabel>
 						<FormControl>
-							<Input {...field} />
+							<Input {...field} placeholder="Email" type="email" />
 						</FormControl>
 						<FormMessage />
 					</FormItem>
@@ -59,7 +59,7 @@ const AccountDetails = ({ form }: { form: any }) => {
 					<FormItem>
 						<FormLabel>Password</FormLabel>
 						<FormControl>
-							<Input type="password" {...field} />
+							<Input type="password" {...field} placeholder="Password" />
 						</FormControl>
 						<FormMessage />
 					</FormItem>
