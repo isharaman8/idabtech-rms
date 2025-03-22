@@ -1,0 +1,60 @@
+[
+  {
+    "uid": "biZlKebDlEv7rl38mzoFc",
+    "title": "Trial",
+    "price": 0,
+    "description": "First try, then trust!",
+    "features": [
+      "Job posts up to 3.",
+      "Featured job posts up to 3.",
+      "Highlighted job posts up to 3.",
+      "50 Candidate CV preview."
+    ],
+    "plan": "default",
+    "showOnFrontend": true
+  },
+  {
+    "uid": "i22cMJuGcntt7AX8A0qvr",
+    "title": "Startup & SME",
+    "price": 49,
+    "description": "For growing businesses.",
+    "features": [
+      "Job posts up to 10.",
+      "Featured job posts up to 5.",
+      "Highlighted job posts up to 5.",
+      "Unlimited Candidate CV preview."
+    ],
+    "plan": "basic",
+    "showOnFrontend": true
+  },
+  {
+    "uid": "AKNDkVQwfFbWqt2o_zhk3",
+    "title": "MSME",
+    "price": 99,
+    "description": "For enterprises & large teams.",
+    "features": [
+      "Unlimited job posts.",
+      "Unlimited featured job posts.",
+      "Unlimited highlighted job posts.",
+      "Unlimited Candidate CV preview.",
+      "Dedicated account manager."
+    ],
+    "plan": "premium",
+    "showOnFrontend": false
+  },
+  {
+    "uid": "ojvYQd73uyFaqs8D6ypye",
+    "title": "Large",
+    "price": 1000,
+    "description": "Tailored solutions for your unique needs.",
+    "features": [
+      "Custom job posts.",
+      "Custom featured job posts.",
+      "Custom highlighted job posts.",
+      "Unlimited Candidate CV preview.",
+      "Dedicated support team."
+    ],
+    "plan": "customized",
+    "showOnFrontend": true
+  }
+]

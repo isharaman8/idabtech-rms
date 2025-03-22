@@ -6,12 +6,14 @@ import { ConfigModule } from '@nestjs/config';
 import { config } from './config/default';
 import { AppService } from './app.service';
 import { AppController } from './app.controller';
+import { PlanModule } from './modules/plan/plan.module';
 import { PrismaModule } from './modules/prisma/prisma.module';
 import { CompaniesModule } from './modules/companies/companies.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, load: [config] }),
+    PlanModule,
     PrismaModule,
     CompaniesModule,
   ],

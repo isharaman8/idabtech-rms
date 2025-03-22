@@ -57,3 +57,17 @@ enum ServiceProvider {
   yes
   no
 }
+
+// PLAN SCHEMA
+model Plan {
+  uid            String   @id @default(uuid())
+  title          String
+  price         Float
+  description    String
+  features      String[]
+  plan           String
+  showOnFrontend Boolean @default(false)
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
