@@ -88,14 +88,18 @@ const Section = ({
 interface CreateCompanyFormProps {
 	cancelForm: () => void;
 	companyDetails?: any;
+	planDetails: Array<any>;
 	handleFormSubmit: (company: any, fetchAgain: boolean) => Promise<void>;
 }
 
 export default function CreateCompanyForm({
 	cancelForm,
+	planDetails,
 	companyDetails,
 	handleFormSubmit,
 }: CreateCompanyFormProps) {
+	console.log(planDetails);
+
 	const form = useForm({
 		resolver: zodResolver(formSchema),
 		defaultValues: companyDetails || {
@@ -221,14 +225,14 @@ export default function CreateCompanyForm({
 								form={form}
 								name="organizationType"
 								label="Organization Type"
-								options={ORGANIZATION_TYPES}
+								options={ORGANIZATION_TYPES.slice(1)}
 							/>
 
 							<CustomSelect
 								form={form}
 								name="industryType"
 								label="Industry Type"
-								options={INDUSTRY_TYPES}
+								options={INDUSTRY_TYPES.slice(1)}
 							/>
 
 							<CustomInput
@@ -376,8 +380,8 @@ export default function CreateCompanyForm({
 									form={form}
 									name="plan"
 									label="Plan"
-									options={PLAN_DETAILS.map((plan) => ({
-										label: plan.name,
+									options={planDetails.map((plan) => ({
+										label: plan.title,
 										value: plan.uid,
 									}))}
 								/>
@@ -393,7 +397,7 @@ export default function CreateCompanyForm({
 									form={form}
 									label="Organization Type"
 									name="organizationType"
-									options={ORGANIZATION_TYPES}
+									options={ORGANIZATION_TYPES.slice(1)}
 								/>
 
 								<CustomSelect
@@ -424,7 +428,7 @@ export default function CreateCompanyForm({
 									form={form}
 									name="industryType"
 									label="Industry Type"
-									options={INDUSTRY_TYPES}
+									options={INDUSTRY_TYPES.slice(1)}
 								/>
 
 								<CustomDatePicker

@@ -21,10 +21,12 @@ import {
 } from "@/services/companyService";
 import { Company } from "@/types";
 import { toast } from "sonner";
+import { fetchPlans } from "@/services/planServices";
 
 const CompanyList: React.FC = () => {
 	// States
 	const [companies, setCompanies] = useState<Company[]>([]);
+	const [plans, setPlans] = useState<Array<any>>([]);
 	const [openCompanyForm, setOpenCompanyForm] = useState<boolean>(false);
 	const [editingCompany, setEditingCompany] = useState<Company | null>(null);
 	const [filters, setFilters] = useState({
@@ -48,11 +50,25 @@ const CompanyList: React.FC = () => {
 		return () => clearTimeout(handler);
 	}, [filters]);
 
+	useEffect(() => {
+		localFetchPlans();
+	}, []);
+
 	const handleFilterChange = (key: string, value: any) => {
 		setFilters((prev) => ({
 			...prev,
 			[key]: value,
 		}));
+	};
+
+	const localFetchPlans = async () => {
+		try {
+			const data = await fetchPlans();
+
+			setPlans(data);
+		} catch (error) {
+			console.error("Error fetching plans:", error);
+		}
 	};
 
 	const localFetchCompanies = async (dFilters: any = {}) => {
@@ -193,6 +209,7 @@ const CompanyList: React.FC = () => {
 				</div>
 			) : (
 				<CompanyForm
+					planDetails={plans}
 					cancelForm={handleCancelForm}
 					companyDetails={editingCompany}
 					handleFormSubmit={handleFormSubmit}

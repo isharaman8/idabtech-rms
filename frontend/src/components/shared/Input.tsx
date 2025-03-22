@@ -30,6 +30,12 @@ const CustomInput: React.FC<CustomInputProps> = ({
 	onChange,
 	className,
 }) => {
+	// try {
+	// 	throw new Error("error");
+	// } catch (error) {
+	// 	console.log(error);
+	// }
+
 	if (form) {
 		return (
 			<FormField

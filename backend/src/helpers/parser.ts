@@ -19,15 +19,15 @@ export const _getParsedQuery = (
     take: query.take ? Number(query.take) : undefined,
     where: {
       industryType:
-        query.industryType !== 'all'
+        query.industryType && query.industryType !== 'all'
           ? { equals: query.industryType }
           : undefined,
       organizationType:
-        query.organizationType !== 'all'
+        query.organizationType && query.organizationType !== 'all'
           ? { equals: query.organizationType }
           : undefined,
       verified:
-        query.emailVerification !== 'all'
+        query.emailVerification && query.emailVerification !== 'all'
           ? { equals: query.emailVerification }
           : undefined,
       ...(query.search
