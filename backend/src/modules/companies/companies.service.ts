@@ -1,4 +1,5 @@
 // third-party imports
+import { nanoid } from 'nanoid';
 import { Prisma, Company } from '@prisma/client';
 import { Injectable, NotFoundException } from '@nestjs/common';
 
@@ -6,31 +7,30 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import {
   CreateCompanyDto,
-  CreateOrUpdateCompanyDto,
   UpdateCompanyDto,
+  CreateOrUpdateCompanyDto,
 } from 'src/dto';
 import { parseArray, parseBoolean, parseDate, parseString } from 'src/utils';
-import { nanoid } from 'nanoid';
 
 @Injectable()
 export class CompaniesService {
   constructor(private prisma: PrismaService) {}
 
   async createOrUpdateCompany(
-    id: string | null,
+    uid: string | null,
     data: CreateCompanyDto | UpdateCompanyDto,
     oldData: CreateOrUpdateCompanyDto,
   ): Promise<Company> {
     const payload = this.getCreateOrUpdateCompanyPayload(data, oldData);
 
     return this.prisma.company.upsert({
-      where: { uid: id ?? '' },
+      where: { uid: uid ?? '' },
       update: {
         ...payload,
         socialLinks: payload.socialLinks
           ? {
               upsert: payload.socialLinks.map((link) => ({
-                where: { id: link.id ?? '' },
+                where: { uid: link.uid ?? '' },
                 update: { platform: link.platform, link: link.link },
                 create: { platform: link.platform, link: link.link },
               })),
@@ -66,18 +66,18 @@ export class CompaniesService {
     });
   }
 
-  async getCompanyById(id: string): Promise<Company> {
+  async getCompanyById(uid: string): Promise<Company> {
     const company = await this.prisma.company.findUnique({
-      where: { id },
+      where: { uid },
     });
     if (!company)
-      throw new NotFoundException(`Company with ID ${id} not found`);
+      throw new NotFoundException(`Company with ID ${uid} not found`);
     return company;
   }
 
-  async deleteCompany(id: string): Promise<Company> {
+  async deleteCompany(uid: string): Promise<Company> {
     return this.prisma.company.delete({
-      where: { id },
+      where: { uid },
     });
   }
 
