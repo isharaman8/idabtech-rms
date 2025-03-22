@@ -106,6 +106,7 @@ const SocialDetails = ({ form, platforms }: SocialDetailsProps) => {
 									variant="destructive"
 									size="sm"
 									type="button"
+									className="cursor-pointer"
 									onClick={() => remove(index)}
 								>
 									<Trash size={14} />

@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Bell, Cog, LogOut, Briefcase } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -12,8 +10,6 @@ import {
 } from "@/components/ui/select";
 
 export default function Navbar() {
-	const [darkMode, setDarkMode] = useState(false);
-
 	return (
 		<nav className="flex items-center justify-between bg-white dark:bg-gray-900 px-6 py-3 shadow">
 			{/* Logo & Section */}
@@ -28,9 +24,6 @@ export default function Navbar() {
 
 			{/* Actions */}
 			<div className="flex items-center gap-4">
-				{/* Dark Mode Toggle */}
-				<Switch checked={darkMode} onCheckedChange={setDarkMode} />
-
 				{/* Language Selector */}
 				<Select defaultValue="eng">
 					<SelectTrigger className="w-24">

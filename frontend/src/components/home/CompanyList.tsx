@@ -20,6 +20,7 @@ import {
 	updateCompany,
 } from "@/services/companyService";
 import { Company } from "@/types";
+import { toast } from "sonner";
 
 const CompanyList: React.FC = () => {
 	// States
@@ -106,10 +107,13 @@ const CompanyList: React.FC = () => {
 	const handleCompanyDelete = async (companyId: string) => {
 		try {
 			await deleteCompany(companyId);
+			toast.success("Delete success");
+
 			setCompanies((prevCompanies) =>
 				prevCompanies.filter((company) => company.uid !== companyId)
 			);
-		} catch (error) {
+		} catch (error: any) {
+			toast.error("Error deleting company", error.message);
 			console.error("Error deleting company:", error);
 		}
 	};
@@ -132,12 +136,15 @@ const CompanyList: React.FC = () => {
 				await createCompany(company);
 			}
 
+			toast.success("Add/Update success");
+
 			if (fetchAgain) {
 				await localFetchCompanies();
 			}
 
 			handleCancelForm();
-		} catch (error) {
+		} catch (error: any) {
+			toast.error("Error creating/updating company", error.message);
 			console.error("Error saving company:", error);
 		}
 	};

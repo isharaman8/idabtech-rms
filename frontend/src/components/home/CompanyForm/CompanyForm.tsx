@@ -169,7 +169,7 @@ export default function CreateCompanyForm({
 							<span>&larr;</span> Back
 						</Button>
 						<h2 className="text-xl font-semibold border-b-2 pb-2 border-red-300 w-full">
-							Quick Create Company
+							Quick {companyDetails.uid ? "Update" : "Create"} Company
 						</h2>
 					</div>
 
@@ -261,14 +261,14 @@ export default function CreateCompanyForm({
 					</Section>
 
 					<Button type="submit" className="w-full cursor-pointer">
-						Quick Create
+						Quick {companyDetails?.uid ? "Update" : "Create"}
 					</Button>
 				</div>
 
 				{/* detailed create section */}
 				<div className="space-y-5">
 					<h2 className="text-xl font-semibold border-b-2 pb-2 border-red-300">
-						Create Company
+						{companyDetails?.uid ? "Update" : "Create"} Company
 					</h2>
 
 					<div className="w-full flex justify-between items-start gap-5">
@@ -444,7 +444,7 @@ export default function CreateCompanyForm({
 					</Section>
 
 					<Button type="submit" className="w-full cursor-pointer">
-						Create
+						{companyDetails?.uid ? "Update" : "Create"}
 					</Button>
 				</div>
 			</form>

@@ -165,16 +165,18 @@ export class CompaniesService {
 
     const payload = {
       uid: companyUid,
-      username: parseString(companyData.username, oldCompanyData.username),
+      username:
+        parseString(companyData.username, oldCompanyData.username) || null,
       email: parseString(companyData.email, oldCompanyData.email),
-      secondaryEmail: parseString(
-        companyData.secondaryEmail,
-        oldCompanyData.secondaryEmail,
-      ),
+      secondaryEmail:
+        parseString(
+          companyData.secondaryEmail,
+          oldCompanyData.secondaryEmail,
+        ) || null,
       password: parseString(companyData.password, oldCompanyData.password),
       bio: parseString(companyData.bio, oldCompanyData.bio),
       vision: parseString(companyData.vision, oldCompanyData.vision),
-      mobile: parseString(companyData.mobile, oldCompanyData.mobile),
+      mobile: parseString(companyData.mobile, oldCompanyData.mobile) || '',
       secondaryMobile: parseString(
         companyData.secondaryMobile,
         oldCompanyData.secondaryMobile,
