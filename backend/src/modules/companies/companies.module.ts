@@ -1,9 +1,14 @@
+// third party imports
 import { Module } from '@nestjs/common';
-import { CompaniesController } from './companies.controller';
+
+// inner imports
 import { CompaniesService } from './companies.service';
+import { PrismaModule } from '../prisma/prisma.module';
+import { CompaniesController } from './companies.controller';
 
 @Module({
+  imports: [PrismaModule],
   controllers: [CompaniesController],
-  providers: [CompaniesService]
+  providers: [CompaniesService],
 })
 export class CompaniesModule {}
