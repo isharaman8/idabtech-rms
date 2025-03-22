@@ -4,7 +4,8 @@ import { NextFunction } from 'express';
 import { Injectable, NestMiddleware, NotFoundException } from '@nestjs/common';
 
 // inner imports
-import { _notEmpty, parseArray } from 'src/utils';
+import { _notEmpty } from 'src/utils';
+import { CreateOrUpdateCompanyDto } from 'src/dto';
 import { CRequest, CResponse } from 'src/interfaces';
 import { _getParsedParams } from 'src/helpers/parser';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
@@ -17,50 +18,54 @@ export class ValidateCompanyMiddleware implements NestMiddleware {
     private companiesService: CompaniesService,
   ) {}
 
-  async validatePatchRequest(method: string, companyUids: string[]) {
+  validatePatchRequest(
+    method: string,
+    oldCompany: CreateOrUpdateCompanyDto | null,
+  ) {
     if (method.toUpperCase() !== 'PATCH') return true;
 
-    const companies = await this.prisma.company.findMany({
-      where: { uid: { in: companyUids } },
-    });
-
-    if (companies.length !== companyUids.length) {
-      throw new NotFoundException('One or more companies not found');
+    if (_.isEmpty(oldCompany)) {
+      throw new NotFoundException('Company not found');
     }
   }
 
-  async validateDeleteRequest(method: string, companyUids: string[]) {
+  validateDeleteRequest(
+    method: string,
+    oldCompany: CreateOrUpdateCompanyDto | null,
+  ) {
     if (method.toUpperCase() !== 'DELETE') return true;
 
-    const companies = await this.prisma.company.findMany({
-      where: { uid: { in: companyUids } },
-    });
-
-    if (companies.length !== companyUids.length) {
-      throw new NotFoundException('One or more companies not found');
+    if (_.isEmpty(oldCompany)) {
+      throw new NotFoundException('Company not found');
     }
   }
 
   async use(req: CRequest, res: CResponse, next: NextFunction) {
     const {
-      body: { companies: _companies = [] },
+      body: { company: _company = {} },
     } = req;
 
-    const companies = parseArray(_companies, [_companies]);
     const params = _getParsedParams(req.params);
-    const companyUids = _.compact([
-      params.companyId,
-      ..._.map(companies, 'uid'),
-    ]);
-    const parsedCompanies = companies.map((company: any) =>
-      this.companiesService.getParsedCompanyPayload(company),
-    );
+    const companyUid = params.companyId || _company.uid;
 
-    await this.validatePatchRequest(req.method, companyUids);
-    await this.validateDeleteRequest(req.method, companyUids);
+    const parsedCompany =
+      this.companiesService.getParsedCompanyPayload(_company);
 
-    // attach to response
-    res.locals.companies = parsedCompanies;
+    let oldCompany: CreateOrUpdateCompanyDto | null = null;
+
+    if (companyUid) {
+      oldCompany = (await this.prisma.company.findUnique({
+        where: { uid: companyUid },
+      })) as CreateOrUpdateCompanyDto;
+    }
+
+    this.validatePatchRequest(req.method, oldCompany);
+    this.validateDeleteRequest(req.method, oldCompany);
+
+    // Attach to response
+    res.locals.company = parsedCompany;
+    res.locals.oldCompany = oldCompany;
+
     next();
   }
 }

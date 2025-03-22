@@ -4,7 +4,11 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 
 // inner imports
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateCompanyDto, UpdateCompanyDto } from 'src/dto';
+import {
+  CreateCompanyDto,
+  CreateOrUpdateCompanyDto,
+  UpdateCompanyDto,
+} from 'src/dto';
 import { parseArray, parseBoolean, parseDate, parseString } from 'src/utils';
 import { nanoid } from 'nanoid';
 
@@ -15,14 +19,17 @@ export class CompaniesService {
   async createOrUpdateCompany(
     id: string | null,
     data: CreateCompanyDto | UpdateCompanyDto,
+    oldData: CreateOrUpdateCompanyDto,
   ): Promise<Company> {
+    const payload = this.getCreateOrUpdateCompanyPayload(data, oldData);
+
     return this.prisma.company.upsert({
-      where: { id: id ?? '' },
+      where: { uid: id ?? '' },
       update: {
-        ...data,
-        socialLinks: data.socialLinks
+        ...payload,
+        socialLinks: payload.socialLinks
           ? {
-              upsert: data.socialLinks.map((link) => ({
+              upsert: payload.socialLinks.map((link) => ({
                 where: { id: link.id ?? '' },
                 update: { platform: link.platform, link: link.link },
                 create: { platform: link.platform, link: link.link },
@@ -31,11 +38,11 @@ export class CompaniesService {
           : undefined,
       },
       create: {
-        ...data,
-        email: data.email as string,
-        socialLinks: data.socialLinks
+        ...payload,
+        email: payload.email as string,
+        socialLinks: payload.socialLinks
           ? {
-              create: data.socialLinks.map((link) => ({
+              create: payload.socialLinks.map((link) => ({
                 platform: link.platform,
                 link: link.link,
               })),
