@@ -171,7 +171,7 @@ export default function CreateCompanyForm({
 							<span>&larr;</span> Back
 						</Button>
 						<h2 className="text-xl font-semibold border-b-2 pb-2 border-red-300 w-full">
-							Quick {companyDetails.uid ? "Update" : "Create"} Company
+							Quick {companyDetails?.uid ? "Update" : "Create"} Company
 						</h2>
 					</div>
 
