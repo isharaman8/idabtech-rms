@@ -23,6 +23,7 @@ interface CustomSelectProps {
 	onChange?: (value: string) => void;
 	form?: any;
 	className?: string;
+	required?: boolean;
 }
 
 const CustomSelect: React.FC<CustomSelectProps> = ({
@@ -33,6 +34,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
 	onChange,
 	form,
 	className,
+	required = false,
 }) => {
 	if (form) {
 		return (
@@ -41,7 +43,9 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
 				name={name}
 				render={({ field }) => (
 					<FormItem className="w-full">
-						<FormLabel>{label}</FormLabel>
+						<FormLabel>
+							{label} {required && <span className="text-red-500">*</span>}
+						</FormLabel>
 						<Select onValueChange={field.onChange} value={field.value || ""}>
 							<FormControl>
 								<SelectTrigger className={cn("w-full", className)}>
@@ -70,7 +74,9 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
 
 	return (
 		<div className="w-full space-y-2">
-			<Label htmlFor={name}>{label}</Label>
+			<Label htmlFor={name}>
+				{label} {required && <span className="text-red-500">*</span>}
+			</Label>
 			<Select onValueChange={onChange} value={value}>
 				<SelectTrigger id={name} className={cn("w-full", className)}>
 					<SelectValue placeholder="Select one">

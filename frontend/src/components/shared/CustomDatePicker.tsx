@@ -22,6 +22,7 @@ interface CustomDatePickerProps {
 	form?: UseFormReturn<any>;
 	value?: Date;
 	onChange?: (date: Date | undefined) => void;
+	required?: boolean;
 }
 
 const CustomDatePicker = ({
@@ -30,6 +31,7 @@ const CustomDatePicker = ({
 	form,
 	value,
 	onChange,
+	required = false,
 }: CustomDatePickerProps) => {
 	if (form && name) {
 		return (
@@ -38,7 +40,9 @@ const CustomDatePicker = ({
 				name={name}
 				render={({ field }) => (
 					<FormItem className="flex flex-col">
-						<FormLabel>{label}</FormLabel>
+						<FormLabel>
+							{label} {required && <span className="text-red-500">*</span>}
+						</FormLabel>
 						<Popover>
 							<PopoverTrigger asChild>
 								<FormControl>
@@ -66,7 +70,9 @@ const CustomDatePicker = ({
 	// Standalone usage
 	return (
 		<div className="flex flex-col space-y-2">
-			<label className="text-sm font-medium">{label}</label>
+			<label className="text-sm font-medium">
+				{label} {required && <span className="text-red-500">*</span>}
+			</label>
 			<Popover>
 				<PopoverTrigger asChild>
 					<Button variant="outline" className="w-full justify-start">

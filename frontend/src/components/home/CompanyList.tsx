@@ -31,7 +31,7 @@ const CompanyList: React.FC = () => {
 	const [editingCompany, setEditingCompany] = useState<Company | null>(null);
 	const [filters, setFilters] = useState({
 		search: "",
-		sortBy: "",
+		sortBy: "oldest",
 		industryType: "",
 		organizationType: "",
 		emailVerification: "",
@@ -188,10 +188,10 @@ const CompanyList: React.FC = () => {
 						<TableHeader>
 							<TableRow>
 								<TableHead>Company</TableHead>
-								<TableHead>Actions</TableHead>
 								<TableHead>Contact</TableHead>
 								<TableHead>Account Status</TableHead>
 								<TableHead>Email Verification</TableHead>
+								<TableHead>Actions</TableHead>
 							</TableRow>
 						</TableHeader>
 						<TableBody>

@@ -277,3 +277,14 @@ export const DEFAULT_PACKAGES = PLAN_DETAILS.filter(
 	value: plan.uid,
 	label: plan.name,
 }));
+
+export const EMAIL_VERIFICATION_ARRAY = [
+	{ label: "ALL", value: "all" },
+	{ label: "Verified", value: "yes" },
+	{ label: "Not Verified", value: "no" },
+];
+
+export const SORT_BY_ARRAY = [
+	{ label: "Newest First", value: "newest" },
+	{ label: "Oldest First", value: "oldest" },
+];

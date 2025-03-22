@@ -17,6 +17,8 @@ interface CustomInputProps {
 	value?: string;
 	className?: string;
 	placeholder?: string;
+	required?: boolean;
+
 	onChange?: (value: string) => void;
 }
 
@@ -29,6 +31,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
 	value = "",
 	onChange,
 	className,
+	required = false,
 }) => {
 	const safeValue = value ?? "";
 
@@ -39,7 +42,9 @@ const CustomInput: React.FC<CustomInputProps> = ({
 				name={name}
 				render={({ field }) => (
 					<FormItem>
-						<FormLabel>{label}</FormLabel>
+						<FormLabel>
+							{label} {required && <span className="text-red-500">*</span>}
+						</FormLabel>
 						<FormControl>
 							<Input
 								type={type}
@@ -58,7 +63,10 @@ const CustomInput: React.FC<CustomInputProps> = ({
 
 	return (
 		<div className="space-y-2">
-			<Label htmlFor={name}>{label}</Label>
+			<Label htmlFor={name}>
+				{label} {required && <span className="text-red-500">*</span>}
+			</Label>
+
 			<Input
 				id={`${name}-${window.crypto.randomUUID()}`}
 				type={type}

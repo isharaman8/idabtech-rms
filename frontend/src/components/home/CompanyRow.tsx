@@ -40,7 +40,7 @@ const CompanyRow = ({
 			{/* Contact Column */}
 			<TableCell>
 				<p>{company.email}</p>
-				<p className="font-bold">{company.phone}</p>
+				<p className="font-bold">{company.mobile}</p>
 			</TableCell>
 
 			{/* Account Status Column */}

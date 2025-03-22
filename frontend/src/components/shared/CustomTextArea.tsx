@@ -12,9 +12,10 @@ interface CustomTextareaProps {
 	name: string;
 	label: string;
 	placeholder?: string;
-	form?: UseFormReturn<any>; // Optional for form usage
+	form?: UseFormReturn<any>;
 	value?: string;
 	onChange?: (value: string) => void;
+	required?: boolean;
 }
 
 const CustomTextarea = ({
@@ -24,16 +25,18 @@ const CustomTextarea = ({
 	form,
 	value,
 	onChange,
+	required = false,
 }: CustomTextareaProps) => {
 	if (form) {
-		// Using as a form field with react-hook-form
 		return (
 			<FormField
 				control={form.control}
 				name={name}
 				render={({ field }) => (
 					<FormItem>
-						<FormLabel>{label}</FormLabel>
+						<FormLabel>
+							{label} {required && <span className="text-red-500">*</span>}
+						</FormLabel>
 						<FormControl>
 							<Textarea placeholder={placeholder} {...field} />
 						</FormControl>
@@ -47,7 +50,9 @@ const CustomTextarea = ({
 	// Using as a standalone input
 	return (
 		<div className="space-y-2">
-			<label className="text-sm font-medium">{label}</label>
+			<label className="text-sm font-medium">
+				{label} {required && <span className="text-red-500">*</span>}
+			</label>
 			<Textarea
 				placeholder={placeholder}
 				value={value}

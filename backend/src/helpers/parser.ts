@@ -14,6 +14,11 @@ export const _getParsedQuery = (
   where?: Prisma.CompanyWhereInput;
   orderBy?: Prisma.CompanyOrderByWithRelationInput;
 } => {
+  const emailVerificationActions = {
+    yes: true,
+    no: false,
+  };
+
   return {
     skip: query.skip ? Number(query.skip) : undefined,
     take: query.take ? Number(query.take) : undefined,
@@ -27,8 +32,10 @@ export const _getParsedQuery = (
           ? { equals: query.organizationType }
           : undefined,
       verified:
-        query.emailVerification && query.emailVerification !== 'all'
-          ? { equals: query.emailVerification }
+        query.emailVerification &&
+        query.emailVerification !== 'all' &&
+        ['yes', 'no'].includes(query.emailVerification)
+          ? { equals: emailVerificationActions[query.emailVerification] }
           : undefined,
       ...(query.search
         ? {

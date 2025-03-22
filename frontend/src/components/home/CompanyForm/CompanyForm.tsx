@@ -182,6 +182,7 @@ export default function CreateCompanyForm({
 								name="companyName"
 								label="Company Name"
 								placeholder="Enter company name"
+								required={true}
 							/>
 
 							<CustomRadio
@@ -189,12 +190,14 @@ export default function CreateCompanyForm({
 								label="Service Provider"
 								options={SERVICE_PROVIDERS}
 								form={form}
+								required={true}
 							/>
 
 							<CustomInput
 								form={form}
 								name="email"
 								label="Email"
+								required={true}
 								placeholder="Enter email address"
 							/>
 
@@ -223,6 +226,7 @@ export default function CreateCompanyForm({
 								form={form}
 								name="organizationType"
 								label="Organization Type"
+								required={true}
 								options={ORGANIZATION_TYPES.slice(1)}
 							/>
 
@@ -230,6 +234,7 @@ export default function CreateCompanyForm({
 								form={form}
 								name="industryType"
 								label="Industry Type"
+								required={true}
 								options={INDUSTRY_TYPES.slice(1)}
 							/>
 
@@ -283,6 +288,7 @@ export default function CreateCompanyForm({
 										name="companyName"
 										label="Company Name"
 										placeholder="Enter company name"
+										required={true}
 									/>
 
 									<CustomInput
@@ -297,6 +303,7 @@ export default function CreateCompanyForm({
 										name="email"
 										label="Email"
 										type="email"
+										required={true}
 										placeholder="Enter email address"
 									/>
 
@@ -347,6 +354,7 @@ export default function CreateCompanyForm({
 									label="Service Provider"
 									options={SERVICE_PROVIDERS}
 									form={form}
+									required={true}
 								/>
 							</Section>
 						</div>
@@ -394,6 +402,7 @@ export default function CreateCompanyForm({
 								<CustomSelect
 									form={form}
 									label="Organization Type"
+									required={true}
 									name="organizationType"
 									options={ORGANIZATION_TYPES.slice(1)}
 								/>
@@ -426,6 +435,7 @@ export default function CreateCompanyForm({
 									form={form}
 									name="industryType"
 									label="Industry Type"
+									required={true}
 									options={INDUSTRY_TYPES.slice(1)}
 								/>
 

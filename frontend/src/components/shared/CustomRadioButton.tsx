@@ -12,9 +12,10 @@ interface CustomRadioProps {
 	name: string;
 	label: string;
 	options: { label: string; value: string }[];
-	form?: any; // Optional form prop
-	value?: string; // For standalone usage
-	onChange?: (value: string) => void; // Callback for standalone usage
+	form?: any;
+	value?: string;
+	onChange?: (value: string) => void;
+	required?: boolean;
 }
 
 export function CustomRadio({
@@ -24,6 +25,7 @@ export function CustomRadio({
 	form,
 	value,
 	onChange,
+	required = false,
 }: CustomRadioProps) {
 	if (form) {
 		// When used inside react-hook-form
@@ -33,7 +35,9 @@ export function CustomRadio({
 				name={name}
 				render={({ field }) => (
 					<FormItem className="space-y-3">
-						<FormLabel>{label}</FormLabel>
+						<FormLabel>
+							{label} {required && <span className="text-red-500">*</span>}
+						</FormLabel>
 						<FormControl>
 							<RadioGroup
 								onValueChange={field.onChange}
@@ -64,7 +68,9 @@ export function CustomRadio({
 	// Standalone usage (without form)
 	return (
 		<div className="space-y-3">
-			<Label>{label}</Label>
+			<Label>
+				{label} {required && <span className="text-red-500">*</span>}
+			</Label>
 			<RadioGroup onValueChange={onChange} value={value} className="flex gap-4">
 				{options.map((option) => (
 					<div key={option.value} className="flex items-center space-x-2">

@@ -1,12 +1,11 @@
 import CustomInput from "../shared/Input";
 import CustomSelect from "../shared/Select";
-import { INDUSTRY_TYPES, ORGANIZATION_TYPES } from "@/config/constants";
-
-const EMAIL_VERIFICATION_ARRAY = [{ label: "All", value: "all" }];
-const SORT_BY_ARRAY = [
-	{ label: "Newest First", value: "newest" },
-	{ label: "Oldest First", value: "oldest" },
-];
+import {
+	SORT_BY_ARRAY,
+	INDUSTRY_TYPES,
+	ORGANIZATION_TYPES,
+	EMAIL_VERIFICATION_ARRAY,
+} from "@/config/constants";
 
 interface FilterSectionProps {
 	filters: {
