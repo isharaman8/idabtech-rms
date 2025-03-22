@@ -1,5 +1,5 @@
 const config = {
-	apiUrl: "http://localhost:8080", // Replace with your actual API URL
+	apiUrl: "http://localhost:8080",
 };
 
 export default config;

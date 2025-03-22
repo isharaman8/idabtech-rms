@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { UseFormReturn, useFieldArray } from "react-hook-form";
+import { Plus, Trash } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { UseFormReturn, useFieldArray } from "react-hook-form";
 import {
 	Select,
 	SelectItem,
@@ -9,7 +10,6 @@ import {
 	SelectTrigger,
 	SelectContent,
 } from "@/components/ui/select";
-import { Plus, Trash } from "lucide-react";
 import {
 	FormField,
 	FormItem,
@@ -35,7 +35,16 @@ const SocialDetails = ({ form, platforms }: SocialDetailsProps) => {
 
 	const addSocialLink = () => {
 		if (selectedPlatform && link) {
-			append({ platform: selectedPlatform, link });
+			const isDuplicate = fields.some(
+				(item: any) => item.platform === selectedPlatform
+			);
+
+			if (!isDuplicate) {
+				append({ platform: selectedPlatform, link });
+			} else {
+				alert("This platform is already added!");
+			}
+
 			setSelectedPlatform("");
 			setLink("");
 		}

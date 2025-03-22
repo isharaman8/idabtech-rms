@@ -19,7 +19,12 @@ export class SocialLinkDto {
   link: string;
 
   @IsString()
+  @IsOptional()
   uid: string;
+
+  @IsString()
+  @IsOptional()
+  companyId: string;
 }
 
 export class CreateCompanyDto {

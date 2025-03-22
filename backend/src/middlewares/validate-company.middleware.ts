@@ -9,11 +9,11 @@ import {
 } from '@nestjs/common';
 
 // inner imports
-import { CreateOrUpdateCompanyDto } from 'src/dto';
 import { CRequest, CResponse } from 'src/interfaces';
 import { _getParsedParams } from 'src/helpers/parser';
 import { _notEmpty, parseArray, parseObject } from 'src/utils';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
+import { CreateOrUpdateCompanyDto, SocialLinkDto } from 'src/dto';
 import { CompaniesService } from 'src/modules/companies/companies.service';
 
 @Injectable()
@@ -82,15 +82,39 @@ export class ValidateCompanyMiddleware implements NestMiddleware {
 
   async validateCompanySocialLinks(
     companyPayload: CreateOrUpdateCompanyDto,
+    oldCompanyPaylod: CreateOrUpdateCompanyDto | null,
     method: string,
   ) {
     if (!['POST', 'PATCH'].includes(method.toUpperCase())) return true;
 
+    // support for deleting social links
+    if (method.toUpperCase() === 'PATCH') {
+      const newSocialLinks = parseArray(companyPayload.socialLinks, []).map(
+          (link: SocialLinkDto) => link.uid,
+        ),
+        oldSocialLinks = parseArray(oldCompanyPaylod?.socialLinks, []).map(
+          (link: SocialLinkDto) => link.uid,
+        );
+
+      const deletedUids = _.compact(
+        _.difference(oldSocialLinks, newSocialLinks),
+      ) as Array<string>;
+
+      if (deletedUids.length) {
+        await this.prisma.socialLink.deleteMany({
+          where: { uid: { in: deletedUids } },
+        });
+      }
+    }
+
     let links = parseArray(companyPayload.socialLinks, []);
 
-    links = _.uniqBy(links, (link: any) => `${link.platform}-${link.link}`);
+    links = _.uniqBy(
+      links,
+      (link: SocialLinkDto) => `${link.platform}-${link.link}`,
+    );
 
-    links.forEach((link: any) => {
+    links.forEach((link: SocialLinkDto) => {
       if (!link.platform || !link.link) {
         throw new BadRequestException(
           'Each social link must have a platform and a link',
@@ -101,6 +125,9 @@ export class ValidateCompanyMiddleware implements NestMiddleware {
         throw new BadRequestException(`Invalid URL format: ${link.link}`);
       }
     });
+
+    // set unique links
+    _.set(companyPayload, 'socialLinks', links);
 
     return true;
   }
@@ -122,6 +149,12 @@ export class ValidateCompanyMiddleware implements NestMiddleware {
         include: { socialLinks: true },
       })) as CreateOrUpdateCompanyDto;
     }
+
+    await this.validateCompanySocialLinks(
+      parsedCompany,
+      oldCompany,
+      req.method,
+    );
 
     await this.validatePostRequest(req.method, parsedCompany);
     this.validatePatchRequest(req.method, oldCompany);

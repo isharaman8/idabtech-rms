@@ -30,7 +30,6 @@ const formSchema = z.object({
 	mobile: z.string().optional().nullable().or(z.literal("")),
 	website: z.string().optional().nullable().or(z.literal("")),
 	teamSize: z.string().optional().nullable().or(z.literal("")),
-	establishmentDate: z.date().optional().nullable(),
 	serviceProvider: z.enum(["yes", "no"]),
 	secondaryMobile: z.string().optional().nullable().or(z.literal("")),
 	email: z.string().email("Invalid email"),
@@ -65,6 +64,10 @@ const formSchema = z.object({
 		.optional()
 		.nullable()
 		.or(z.literal("")),
+	establishmentDate: z
+		.union([z.string().transform((val) => new Date(val)), z.date()])
+		.optional()
+		.nullable(),
 });
 
 const Section = ({
@@ -120,6 +123,8 @@ export default function CreateCompanyForm({
 			secondaryEmail: "",
 			secondaryMobile: "",
 			organizationType: "",
+			createdAt: undefined,
+			updatedAt: undefined,
 			serviceProvider: "yes",
 			establishmentDate: undefined,
 		},

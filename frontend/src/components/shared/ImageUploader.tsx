@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useController } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { UploadCloudIcon } from "lucide-react";
@@ -22,20 +22,27 @@ export function ImageUploader({
 		? useController({ name, control })
 		: { field: { value, onChange } };
 
-	const [preview, setPreview] = useState<string | null>(
-		field.value ? URL.createObjectURL(field.value) : null
-	);
+	const [preview, setPreview] = useState<string | null>(null);
+
+	useEffect(() => {
+		if (field.value instanceof File) {
+			const objectUrl = URL.createObjectURL(field.value);
+			setPreview(objectUrl);
+
+			return () => URL.revokeObjectURL(objectUrl);
+		} else {
+			setPreview(null);
+		}
+	}, [field.value]);
 
 	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const file = event.target.files?.[0];
 		if (file) {
 			field.onChange?.(file);
-			setPreview(URL.createObjectURL(file));
 		}
 	};
 
 	const handleRemove = () => {
-		setPreview(null);
 		field.onChange?.(null);
 	};
 
@@ -49,7 +56,6 @@ export function ImageUploader({
 					onChange={handleFileChange}
 					className="hidden"
 					id={name}
-					// disabled for now
 					disabled
 				/>
 				<label

@@ -6,7 +6,8 @@ const API_URL = `${config.apiUrl}/plans`;
 export const fetchPlans = async () => {
 	try {
 		const response = await axiosInstance.get(API_URL);
-		return response.data;
+
+		return response.data?.plans || [];
 	} catch (error) {
 		console.error("Error fetching plans:", error);
 		throw error;
@@ -20,8 +21,9 @@ export const createPlan = async (plan: any) => {
 		plan.uid = uid;
 		plan.id = uid;
 
-		const response = await axiosInstance.post(API_URL, plan);
-		return response.data;
+		const response = await axiosInstance.post(API_URL, { plan });
+
+		return response.data?.plan || {};
 	} catch (error) {
 		console.error("Error creating plan:", error);
 		throw error;
@@ -31,7 +33,7 @@ export const createPlan = async (plan: any) => {
 export const updatePlan = async (uid: string, updatedPlan: any) => {
 	try {
 		const url = `${API_URL}/${uid}`;
-		const response = await axiosInstance.put(url, updatedPlan);
+		const response = await axiosInstance.patch(url, { plan: updatedPlan });
 
 		return response.data;
 	} catch (error) {
