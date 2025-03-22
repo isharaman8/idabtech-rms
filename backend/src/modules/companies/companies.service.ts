@@ -10,13 +10,7 @@ import {
   UpdateCompanyDto,
   CreateOrUpdateCompanyDto,
 } from 'src/dto';
-import {
-  parseArray,
-  parseDate,
-  parseObject,
-  parseString,
-  parseBoolean,
-} from 'src/utils';
+import { parseArray, parseDate, parseString, parseBoolean } from 'src/utils';
 
 @Injectable()
 export class CompaniesService {

@@ -19,7 +19,7 @@ interface FilterSectionProps {
 	handleFilterChange: (key: string, name: string) => void;
 }
 
-const FilterSection = ({ handleFilterChange }: FilterSectionProps) => {
+const FilterSection = ({ handleFilterChange, filters }: FilterSectionProps) => {
 	return (
 		<div className="grid grid-cols-5 gap-4 mb-4 bg-gray-200 p-5 rounded-md">
 			<CustomInput
@@ -27,14 +27,16 @@ const FilterSection = ({ handleFilterChange }: FilterSectionProps) => {
 				name="search"
 				className="bg-white"
 				placeholder="Search"
+				value={filters.search}
 				onChange={(value) => handleFilterChange("search", value)}
 			/>
 
 			<CustomSelect
-				label="Organization Type"
-				name="organizationType"
-				options={ORGANIZATION_TYPES}
 				className="bg-white"
+				name="organizationType"
+				label="Organization Type"
+				options={ORGANIZATION_TYPES}
+				value={filters.organizationType}
 				onChange={(value) => handleFilterChange("organizationType", value)}
 			/>
 
@@ -43,6 +45,7 @@ const FilterSection = ({ handleFilterChange }: FilterSectionProps) => {
 				label="Industry Type"
 				className="bg-white"
 				options={INDUSTRY_TYPES}
+				value={filters.industryType}
 				onChange={(value) => handleFilterChange("industryType", value)}
 			/>
 			<CustomSelect
@@ -50,6 +53,7 @@ const FilterSection = ({ handleFilterChange }: FilterSectionProps) => {
 				name="emailVerification"
 				options={EMAIL_VERIFICATION_ARRAY}
 				className="bg-white"
+				value={filters.emailVerification}
 				onChange={(value) => handleFilterChange("emailVerification", value)}
 			/>
 
@@ -58,6 +62,7 @@ const FilterSection = ({ handleFilterChange }: FilterSectionProps) => {
 				name="sortBy"
 				options={SORT_BY_ARRAY}
 				className="bg-white"
+				value={filters.sortBy}
 				onChange={(value) => handleFilterChange("sortBy", value)}
 			/>
 		</div>

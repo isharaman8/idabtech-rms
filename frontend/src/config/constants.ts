@@ -69,6 +69,7 @@ export const PLAN_DETAILS = [
 ];
 
 export const ORGANIZATION_TYPES = [
+	{ label: "ALL", value: "all" },
 	{ label: "NGO", value: "ngo" },
 	{ label: "Other", value: "other" },
 	{ label: "Government", value: "government" },
@@ -80,6 +81,7 @@ export const ORGANIZATION_TYPES = [
 ];
 
 export const TEAM_SIZES = [
+	{ label: "ALL", value: "all" },
 	{ label: "1-10", value: "1-10" },
 	{ label: "11-50", value: "11-50" },
 	{ label: "51-200", value: "51-200" },
@@ -91,6 +93,7 @@ export const TEAM_SIZES = [
 ];
 
 export const INDUSTRY_TYPES = [
+	{ label: "ALL", value: "all" },
 	{ label: "Retail", value: "retail" },
 	{ label: "Energy", value: "energy" },
 	{ label: "Finance", value: "finance" },
