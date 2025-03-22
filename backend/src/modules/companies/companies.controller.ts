@@ -35,7 +35,7 @@ export class CompaniesController {
     }
 
     const processedCompany = await this.companiesService.createOrUpdateCompany(
-      payload.uid,
+      oldCompany?.uid,
       payload,
       oldCompany,
     );

@@ -16,8 +16,8 @@ export class CompaniesModule {
   configure(consumer: MiddlewareConsumer) {
     const routes = [
       { path: 'companies', method: RequestMethod.POST },
-      { path: 'companies', method: RequestMethod.PATCH },
-      { path: 'companies', method: RequestMethod.DELETE },
+      { path: 'companies/:company_uid', method: RequestMethod.PATCH },
+      { path: 'companies/:company_uid', method: RequestMethod.DELETE },
     ];
 
     consumer.apply(ValidateCompanyMiddleware).forRoutes(...routes);

@@ -10,7 +10,13 @@ import {
   UpdateCompanyDto,
   CreateOrUpdateCompanyDto,
 } from 'src/dto';
-import { parseArray, parseBoolean, parseDate, parseString } from 'src/utils';
+import {
+  parseArray,
+  parseDate,
+  parseObject,
+  parseString,
+  parseBoolean,
+} from 'src/utils';
 
 @Injectable()
 export class CompaniesService {
@@ -20,20 +26,22 @@ export class CompaniesService {
     uid: string | null,
     data: CreateCompanyDto | UpdateCompanyDto,
     oldData: CreateOrUpdateCompanyDto,
-  ): Promise<Company> {
+  ) {
     const payload = this.getCreateOrUpdateCompanyPayload(data, oldData);
 
-    return this.prisma.company.upsert({
-      where: { uid: uid ?? '' },
+    await this.prisma.company.upsert({
+      where: { uid: uid ?? 'random-invalid-uid' },
       update: {
         ...payload,
         socialLinks: payload.socialLinks
           ? {
-              upsert: payload.socialLinks.map((link) => ({
-                where: { uid: link.uid ?? '' },
-                update: { platform: link.platform, link: link.link },
-                create: { platform: link.platform, link: link.link },
-              })),
+              upsert: payload.socialLinks
+                .filter((link) => Boolean(link.uid))
+                .map((link) => ({
+                  where: { uid: link.uid ?? '' },
+                  update: { platform: link.platform, link: link.link },
+                  create: { platform: link.platform, link: link.link },
+                })),
             }
           : undefined,
       },
@@ -42,17 +50,21 @@ export class CompaniesService {
         email: payload.email as string,
         socialLinks: payload.socialLinks
           ? {
-              create: payload.socialLinks.map((link) => ({
-                platform: link.platform,
-                link: link.link,
-              })),
+              create: payload.socialLinks
+                .filter((link) => Boolean(link.uid))
+                .map((link) => ({
+                  platform: link.platform,
+                  link: link.link,
+                })),
             }
           : undefined,
       },
     });
+
+    return payload;
   }
 
-  async getAllCompanies(params?: {
+  async getAllCompanies(params: {
     skip?: number;
     take?: number;
     where?: Prisma.CompanyWhereInput;
@@ -63,12 +75,16 @@ export class CompaniesService {
       take: params?.take,
       where: params?.where,
       orderBy: params?.orderBy,
+      include: {
+        socialLinks: true,
+      },
     });
   }
 
   async getCompanyById(uid: string): Promise<Company> {
     const company = await this.prisma.company.findUnique({
       where: { uid },
+      include: { socialLinks: true },
     });
     if (!company)
       throw new NotFoundException(`Company with ID ${uid} not found`);
@@ -129,8 +145,8 @@ export class CompaniesService {
       password: parseString(password, ''),
       verified: parseBoolean(verified, false),
       serviceProvider: serviceProvider ?? 'no',
-      socialLinks: parseArray(socialLinks, []),
       companyName: parseString(companyName, ''),
+      socialLinks: parseArray(socialLinks, null),
       industryType: parseString(industryType, ''),
       establishmentDate: parseDate(establishmentDate),
       secondaryEmail: parseString(secondaryEmail, ''),
@@ -145,8 +161,10 @@ export class CompaniesService {
     companyData: any,
     oldCompanyData: any,
   ): CreateCompanyDto | UpdateCompanyDto {
+    const companyUid = parseString(oldCompanyData.uid, nanoid());
+
     const payload = {
-      uid: parseString(oldCompanyData.uid, nanoid()),
+      uid: companyUid,
       username: parseString(companyData.username, oldCompanyData.username),
       email: parseString(companyData.email, oldCompanyData.email),
       secondaryEmail: parseString(
@@ -188,9 +206,11 @@ export class CompaniesService {
       active: parseBoolean(companyData.active, oldCompanyData.active),
       verified: parseBoolean(companyData.verified, oldCompanyData.verified),
       socialLinks: companyData.socialLinks
-        ? companyData.socialLinks.map((link) => ({
-            platform: parseString(link.platform, ''),
+        ? companyData.socialLinks.map((link: any) => ({
+            companyId: companyUid,
             link: parseString(link.link, ''),
+            uid: parseString(link.uid, nanoid()),
+            platform: parseString(link.platform, ''),
           }))
         : oldCompanyData.socialLinks || [],
       logo: parseString(companyData.logo, oldCompanyData.logo),
