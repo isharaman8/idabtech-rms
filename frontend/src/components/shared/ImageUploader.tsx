@@ -55,7 +55,7 @@ export function ImageUploader({
 					accept="image/*"
 					onChange={handleFileChange}
 					className="hidden"
-					id={name}
+					id={`${name}-${window.crypto.randomUUID()}`}
 					disabled
 				/>
 				<label

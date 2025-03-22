@@ -98,8 +98,6 @@ export default function CreateCompanyForm({
 	companyDetails,
 	handleFormSubmit,
 }: CreateCompanyFormProps) {
-	console.log(planDetails);
-
 	const form = useForm({
 		resolver: zodResolver(formSchema),
 		defaultValues: companyDetails || {

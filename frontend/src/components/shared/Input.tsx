@@ -26,15 +26,11 @@ const CustomInput: React.FC<CustomInputProps> = ({
 	label,
 	type = "text",
 	placeholder = "",
-	value,
+	value = "",
 	onChange,
 	className,
 }) => {
-	// try {
-	// 	throw new Error("error");
-	// } catch (error) {
-	// 	console.log(error);
-	// }
+	const safeValue = value ?? "";
 
 	if (form) {
 		return (
@@ -48,6 +44,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
 							<Input
 								type={type}
 								{...field}
+								value={field.value ?? ""}
 								placeholder={placeholder}
 								className={className}
 							/>
@@ -63,9 +60,9 @@ const CustomInput: React.FC<CustomInputProps> = ({
 		<div className="space-y-2">
 			<Label htmlFor={name}>{label}</Label>
 			<Input
-				id={name}
+				id={`${name}-${window.crypto.randomUUID()}`}
 				type={type}
-				value={value}
+				value={safeValue}
 				onChange={(e) => onChange?.(e.target.value)}
 				placeholder={placeholder}
 				className={className}

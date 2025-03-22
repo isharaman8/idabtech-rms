@@ -45,7 +45,10 @@ export function CustomRadio({
 										key={option.value}
 										className="flex items-center space-x-2"
 									>
-										<RadioGroupItem value={option.value} id={option.value} />
+										<RadioGroupItem
+											value={option.value}
+											id={`${option.value}-${window.crypto.randomUUID()}`}
+										/>
 										<Label htmlFor={option.value}>{option.label}</Label>
 									</div>
 								))}
@@ -65,7 +68,10 @@ export function CustomRadio({
 			<RadioGroup onValueChange={onChange} value={value} className="flex gap-4">
 				{options.map((option) => (
 					<div key={option.value} className="flex items-center space-x-2">
-						<RadioGroupItem value={option.value} id={option.value} />
+						<RadioGroupItem
+							value={option.value}
+							id={`${option.value}-${window.crypto.randomUUID()}`}
+						/>
 						<Label htmlFor={option.value}>{option.label}</Label>
 					</div>
 				))}
