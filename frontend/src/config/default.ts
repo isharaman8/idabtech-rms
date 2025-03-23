@@ -1,5 +1,5 @@
 const config = {
-	apiUrl: "http://localhost:8080",
+	apiUrl: "https://api.amankumarishar.in",
 };
 
 export default config;
