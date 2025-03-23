@@ -1,6 +1,6 @@
 export const config = () => {
   const configObj = {
-    port: 8080,
+    port: 3008,
     api: {
       apiUrl: process.env.API_URL as string,
       httpTimeout: 1000,
