@@ -10,7 +10,6 @@ import CustomSelect from "../../shared/Select";
 import {
 	COUNTRIES,
 	TEAM_SIZES,
-	PLAN_DETAILS,
 	INDUSTRY_TYPES,
 	ORGANIZATION_TYPES,
 } from "@/config/constants";
