@@ -15,13 +15,13 @@ datasource db {
 
 model Company {
   uid               String  @id @default(uuid())
-  username          String?  @unique
-  email             String   @unique
-  secondaryEmail    String?  @unique
+  username          String?
+  email             String
+  secondaryEmail    String?
   password          String?
   bio               String?
   vision            String?
-  mobile            String?  @unique
+  mobile            String?
   secondaryMobile   String?
   website           String?
   teamSize          String?

@@ -156,7 +156,7 @@ export class ValidateCompanyMiddleware implements NestMiddleware {
       req.method,
     );
 
-    await this.validatePostRequest(req.method, parsedCompany);
+    // await this.validatePostRequest(req.method, parsedCompany);
     this.validatePatchRequest(req.method, oldCompany);
     this.validateDeleteRequest(req.method, oldCompany);
 
